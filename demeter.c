@@ -9,7 +9,7 @@
 #define NUTRIENTS_SIZE 1048576
 
 
-struct products {
+struct Products {
 	int NBD_Number; 
 	char* long_name; 
 	// TODO: change back to char [2]?
@@ -23,24 +23,25 @@ struct products {
 
 // TODO: create a generalized function for reading CSV data of any parameters. (parseCSV)
 
-void parseCSV(char* filename, struct products* productList, int FILE_SIZE) {
+//void parseRowCSV(char* filename, struct products* productList, int FILE_SIZE) {
+//
+//}
 
-}
-
-void loadProductData(char* filename, struct products productList[]) {
+void loadProductData(char* filename, int fileSize, struct Products productList[]) {
+//void loadFileData(char* filename, char* whichFile) {
 	FILE* productInput;
 	char buffer[BUFFER_SIZE];
 	productInput = fopen(filename, "r");
-	// filter out columns
+	//struct products productList[PRODUCTS_SIZE];
+	 //filter out columns
 	fgets(buffer, sizeof(buffer), productInput);
 	char* token;
-	struct products product = { .NBD_Number = 0, .long_name = "", .data_source = "", .gtin_upc = 0, 
+	struct Products product = { .NBD_Number = 0, .long_name = "", .data_source = "", .gtin_upc = 0, 
 								 .manufacturer = "", .date_modified = "", .date_available = "", 
 								 .ingredients_english = ""};
 
 	// place each line (struct) in array
-	for (int i = 0; i < PRODUCTS_SIZE; i++) {
-		printf("hello"); 
+	for (int i = 0; i < fileSize; i++) {
 		// TODO: initialize to eliminate compiler warnings
 		fgets(buffer, sizeof(buffer), productInput);
 		token = strtok(buffer, ","); 
@@ -53,9 +54,12 @@ void loadProductData(char* filename, struct products productList[]) {
 		product.date_modified = token; token = strtok(NULL, ",");
 		product.date_available = token; token = strtok(NULL, ",");
 		product.ingredients_english = token;
-		productList[PRODUCTS_SIZE] = product; 
+		productList[i] = product; 
+		printf("%s", productList[i].long_name); 
 	}
 	fclose(productInput); 
+	//printf("%s\n%s\n", productList[0].long_name, productList[PRODUCTS_SIZE - 1].long_name);
+	return; 
 }
 
 void printMenu() {
@@ -69,9 +73,9 @@ void printMenu() {
 
 int main() {
 	char* productFile = "C:\\Users\\thebr\\Downloads\\BFPD_csv_07132018\\Products.csv"; 
-	struct products productList[PRODUCTS_SIZE];
-	loadProductData(productFile, productList);
-	printf("%s", productList[0].long_name);
+	struct Products productList;
+	//loadProductData(productFile, productList);
+	loadProductData(productFile, PRODUCTS_SIZE, &productList); 
 	printMenu(); 
 	printf("Choose an option: "); 
 	//int menuChoice; 
