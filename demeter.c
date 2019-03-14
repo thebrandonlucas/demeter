@@ -44,18 +44,19 @@ void loadProductData(char* filename, int fileSize, struct Products productList[]
 	for (int i = 0; i < fileSize; i++) {
 		// TODO: initialize to eliminate compiler warnings
 		fgets(buffer, sizeof(buffer), productInput);
-		token = strtok(buffer, ","); 
+		token = strtok(buffer, "~"); 
 		// FIXME: this is the part you'll replace to refactor it
-		product.NBD_Number = atoi(token); token = strtok(NULL, ",");
-		product.long_name = token; token = strtok(NULL, ",");
-		product.data_source = token; token = strtok(NULL, ",");
-		product.gtin_upc = atoi(token); token = strtok(NULL, ",");
-		product.manufacturer = token; token = strtok(NULL, ",");
-		product.date_modified = token; token = strtok(NULL, ",");
-		product.date_available = token; token = strtok(NULL, ",");
+		product.NBD_Number = atoi(token); token = strtok(NULL, "~");
+		product.long_name = token; token = strtok(NULL, "~");
+		product.data_source = token; token = strtok(NULL, "~");
+		product.gtin_upc = atoi(token); token = strtok(NULL, "~");
+		product.manufacturer = token; token = strtok(NULL, "~");
+		product.date_modified = token; token = strtok(NULL, "~");
+		product.date_available = token; token = strtok(NULL, "~");
 		product.ingredients_english = token;
 		productList[i] = product; 
 		printf("%s", productList[i].long_name); 
+		printf("hello"); 
 	}
 	fclose(productInput); 
 	//printf("%s\n%s\n", productList[0].long_name, productList[PRODUCTS_SIZE - 1].long_name);
