@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "product.h"
 
 /*
@@ -25,13 +26,13 @@ Productptr newProductNode(int NBD_Number) {
 	pnode->NBD_Number = NBD_Number; 
 	pnode->long_name = NULL;
 	pnode->manufacturer = NULL;
-	pnode->energy = NULL;
-	pnode->carbs = NULL;
-	pnode->fat = NULL;
-	pnode->protein = NULL;
-	pnode->serving_size = NULL;
+	pnode->energy = 0.0;
+	pnode->carbs = 0.0;
+	pnode->fat = 0.0;
+	pnode->protein = 0.0;
+	pnode->serving_size = 0.0;
 	pnode->serving_size_units = NULL;
-	pnode->household_serving_size = NULL;
+	pnode->household_serving_size = 0.0;
 	pnode->household_serving_size_units = NULL;
 	//pnode->long_name = long_name;
 	//pnode->manufacturer = manufacturer;
@@ -53,6 +54,6 @@ Productptr newProductNode(int NBD_Number) {
 
 Productptr insert(Productptr pnode, int NBD_Number) {
 	// 1) Do a typical BST insert
-	if (node == NULL)
+	if (pnode == NULL)
 		return newProductNode(NBD_Number); 
 }

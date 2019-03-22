@@ -1,3 +1,6 @@
 LDFLAGS=-lncurses
+CC=gcc
+CFLAGS=-W
 
-all: demeter 
+demetermake: demeter.o product_functions.o
+	$(CC) -o demetermake demeter.o product_functions.o 

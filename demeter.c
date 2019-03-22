@@ -8,7 +8,7 @@
 
 
 
-void loadProductData(char* filename, int fileSize, Productptr productList[]) {
+void loadProductData(char* filename, int fileSize, Productptr productTree) {
 	FILE* productFile;
 	char buffer[BUFFER_SIZE];
 	productFile = fopen(filename, "r");
@@ -141,7 +141,11 @@ int main() {
 	//struct Product* productList[PRODUCTS_SIZE];
 	//loadProductData(productFile, productList);
 	//loadProductData(productFile, PRODUCTS_SIZE, productList); 
+	
 	printf("hello"); 
+	Productptr root = NULL; 
+	root = insert(root, 10); 
+	printf("%d", root->NBD_Number); 
 	//printMenu(); 
 	//printf("hello%shello", productList[0]->long_name); 
 	//printf("Choose an option: "); 

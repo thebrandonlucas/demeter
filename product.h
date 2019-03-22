@@ -33,11 +33,14 @@ typedef struct pnode {
 int max(int a, int b);
 
 // A function for finding the height of the tree
-int height(Productptr *root);
+int height(Productptr root);
 
 // A function to allocate a new product
 Productptr palloc(void);
 
 // A function to create a new product node
 Productptr newProductNode(int NBD_Number);
+
+// insert function
+Productptr insert(Productptr pnode, int NBD_Number);
 #endif
