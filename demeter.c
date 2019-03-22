@@ -8,17 +8,30 @@
 
 
 
-void loadProductData(char* filename, int fileSize, Productptr productTree) {
-	FILE* productFile;
+Productptr loadProductData(char* filename, Productptr root) {
+	FILE* filestream;
 	char buffer[BUFFER_SIZE];
-	productFile = fopen(filename, "r");
-	//fgets(buffer, sizeof(buffer), productFile);
+	filestream = fopen(filename, "r");
+	//fgets(buffer, sizeof(buffer), filestream);
 	char* token;
-	//struct Product product = { .NBD_Number = 0, .long_name = "", .manufacturer = "", .energy = 0.0,
-	//							.carbs = 0.0, .fat = 0.0, .protein = 0.0, .serving_size = 0.0,
-	//							.serving_size_units = "", .household_serving_size = "", 
-	//							.household_serving_size_units =  };
+	
+	Productptr tempnode = palloc(); 
 	int i; 
+	while (fgets(buffer, sizeof(buffer), filestream) != NULL) {
+		token = strtok(buffer, "~");
+		tempnode->NBD_Number = atoi(token); token = strtok(NULL, "~");
+		tempnode->long_name = token; token = strtok(NULL, "~");
+		tempnode->manufacturer = token; token = strtok(NULL, "~");
+		tempnode->energy = atof(token); token = strtok(NULL, "~");
+		tempnode->carbs = atof(token); token = strtok(NULL, "~");
+		tempnode->fat = atof(token); token = strtok(NULL, "~");
+		tempnode->protein = atof(token); token = strtok(NULL, "~");
+		tempnode->serving_size = atof(token); token = strtok(NULL, "~");
+		tempnode->serving_size_units = token; token = strtok(NULL, "~");
+		tempnode->household_serving_size = token != NULL ? atof(token) : -99.0; token = strtok(NULL, "~");
+		tempnode->household_serving_size_units = token; token = strtok(NULL, "~"); 
+		root = insert(root, tempnode); 
+	}
 	// initialize and allocate space
 	//for (i = 0; i < fileSize; i++) {
 	//	productList[i] = (Productptr)malloc(sizeof(ProductNode) * sizeof(productList[i]->long_name)); 
@@ -70,7 +83,7 @@ void loadProductData(char* filename, int fileSize, Productptr productTree) {
 //	//printf("%d", productList[0]->NBD_Number); 
 //	fclose(productFile);
 //	//printf("%s\n%s\n", productList[0].long_name, productList[PRODUCTS_SIZE - 1].long_name);
-	return; 
+	return root; 
 }
 
 void printMenu() {
@@ -143,9 +156,23 @@ int main() {
 	//loadProductData(productFile, PRODUCTS_SIZE, productList); 
 	
 	printf("hello"); 
+	Productptr tempnode = palloc(); 
+	//tempnode->carbs = 1; 
+	//tempnode->energy = 1; 
+	//tempnode->fat = 1; 
+	//tempnode->household_serving_size = 1; 
+	//tempnode->household_serving_size_units = "asdf"; 
+	//tempnode->long_name = "asdf"; 
+	//tempnode->manufacturer = "adsf"; 
+	//tempnode->NBD_Number = 1; 
+	//tempnode->protein = 1; 
+	//tempnode->serving_size = 1; 
+	//tempnode->serving_size_units = "asdf"; 
 	Productptr root = NULL; 
-	root = insert(root, 10); 
+	root = loadProductData(productFile, root); 
 	printf("%d", root->NBD_Number); 
+	//root = insert(root, tempnode); 
+	//printf("%d", root->NBD_Number); 
 	//printMenu(); 
 	//printf("hello%shello", productList[0]->long_name); 
 	//printf("Choose an option: "); 

@@ -21,7 +21,8 @@ Productptr palloc(void) {
 }
 
 Productptr newProductNode(int NBD_Number) {
-	Productptr pnode = (Productptr)malloc(sizeof(ProductNode)); 
+	Productptr pnode = palloc(); 
+	//Productptr pnode = (Productptr)malloc(sizeof(ProductNode)); 
 
 	pnode->NBD_Number = NBD_Number; 
 	pnode->long_name = NULL;
@@ -52,8 +53,28 @@ Productptr newProductNode(int NBD_Number) {
 	return pnode; 
 }
 
-Productptr insert(Productptr pnode, int NBD_Number) {
+// FIXME: Should I put all the variables that need to go into
+// the node in the insert function call? That's ugly, but
+// using another pointer for it uses extra memory
+Productptr insert(Productptr pnode, Productptr tempnode) {
 	// 1) Do a typical BST insert
 	if (pnode == NULL)
-		return newProductNode(NBD_Number); 
+		return newProductNode(tempnode->NBD_Number); 
+	pnode->NBD_Number = tempnode->NBD_Number;
+	pnode->long_name = tempnode->long_name;
+	pnode->manufacturer = tempnode->manufacturer;
+	pnode->energy = tempnode->energy;
+	pnode->carbs = tempnode->carbs;
+	pnode->fat = tempnode->fat;
+	pnode->protein = tempnode->protein;
+	pnode->serving_size = tempnode->serving_size;
+	pnode->serving_size_units = tempnode->serving_size_units;
+	pnode->household_serving_size = tempnode->household_serving_size;
+	pnode->household_serving_size_units = tempnode->household_serving_size_units;
+
+	// new pnode is a leaf
+	pnode->treeHeight = 1; 
+	pnode->left = NULL; 
+	pnode->right = NULL; 
+	return pnode; 
 }

@@ -42,5 +42,5 @@ Productptr palloc(void);
 Productptr newProductNode(int NBD_Number);
 
 // insert function
-Productptr insert(Productptr pnode, int NBD_Number);
+Productptr insert(Productptr pnode, Productptr tempnode);
 #endif
