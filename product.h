@@ -9,6 +9,7 @@ typedef struct pnode *Productptr;
 // A node to store attributes for each product
 typedef struct pnode {
 	int NBD_Number;
+	int key; 
 	char* long_name;
 	char* manufacturer;
 	double energy;
@@ -33,14 +34,24 @@ typedef struct pnode {
 int max(int a, int b);
 
 // A function for finding the height of the tree
-int height(Productptr root);
+int treeHeight(Productptr root);
 
 // A function to allocate a new product
 Productptr palloc(void);
 
 // A function to create a new product node
-Productptr newProductNode(int NBD_Number);
+Productptr newProductNode(Productptr tempnode);
 
-// insert function
+// Insert function
 Productptr insert(Productptr pnode, Productptr tempnode);
+
+// Auxiliary rotate functions
+Productptr rightRotate(Productptr y); 
+Productptr leftRotate(Productptr x);
+
+// balance factor of node N
+int getBalanceFactor(Productptr N); 
+
+// TODO: DELETE
+void preOrder(Productptr root); 
 #endif
