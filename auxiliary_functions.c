@@ -54,21 +54,32 @@ void printPasswordMenu() {
 
 }
 
-void createNewUser() {
-	char *username = ""; 
-	char *password; 
+void createNewUserDiary() {
+	char *username = (char*)malloc(sizeof(char)); 
+	char *filename = (char*)malloc(sizeof(char)); 
+	char line[BUFFER_SIZE];
+	FILE *diary; 
 	system("clear"); 
 	printf("Welcome!\n\n"); 
 	printf("Please create a username and password\n\n");
 	printf("Username: ");
-	scanf("%s", username); 
+	fgets(username, sizeof(username), stdin); 
+	sscanf(line, "%s", username); 
 	//printf("Password: "); 
 	//password = getpass("Password: "); 
 	//scanf("%s", &password); 
 
 	// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
-	printf("Success! Created new diary for %s", username); 
-}
+	strcpy(filename, username); 
+	strcat(filename, ".log");
+	diary = fopen(filename, "a+");
+	printf("Success! Created new diary for %s\n", username);
+	printf("Press any key to continue: "); 
+	getchar(); 
+	free(username); 
+	free(filename); 
+	//free(temp);
+}	
 
 char *mallocopy(char* a, char* b, size_t n) {
 	a = (char*)malloc(n * sizeof(char));

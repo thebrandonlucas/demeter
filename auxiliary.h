@@ -21,7 +21,7 @@ void printLoginMenu();
 void printPasswordMenu(); 
 
 // Print menu to create new user diary
-void createNewUser(); 
+void createNewUserDiary();
 
 // Allocate for string size and copy to new string
 char *mallocopy(char* a, char* b, size_t n); 

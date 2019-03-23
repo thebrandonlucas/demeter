@@ -13,8 +13,10 @@ int main() {
 	//root = loadProductData(productFile, root); 
 
 	printLoginMenu(); 
+	char line[BUFFER_SIZE]; 
 	int choice; 
-	if (scanf("%d", &choice) != 1) {
+	fgets(line, sizeof(line), stdin); 
+	if (sscanf(line, "%d", &choice) != 1) {
 		printf("Please enter an integer corresponding to the correct\n");
 		printf("choice. Error...Exiting");
 		exit(0); 
@@ -24,7 +26,9 @@ int main() {
 		case 1: 
 			printPasswordMenu();
 		case 2: 
-			createNewUser();
+			createNewUserDiary();
+			printMainMenu(); 
+
 	}
 
 	return 0; 
