@@ -44,22 +44,34 @@ Productptr newProductNode(Productptr tempnode) {
 	return(pnode); 
 }
 
-// FIXME: Should I put all the variables that need to go into
-// the node in the insert function call? That's ugly, but
-// using another pointer for it uses extra memory
+Productptr treeSearch(Productptr root, int key) {
+	if (root == NULL || key == root->NBD_Number)
+		return root; 
+	if (key < root->NBD_Number)
+		return treeSearch(root->left, key);
+	return treeSearch(root->right, key);
+}
+
 // TODO: Change tempnode to "data" or some better name
-Productptr insert(Productptr pnode, Productptr tempnode) {
-	//printf("hello"); 
+Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	int key = tempnode->NBD_Number; 
 	if (pnode == NULL)
 		return newProductNode(tempnode); 
 
-	if (key < pnode->NBD_Number)
-		pnode->left = insert(pnode->left, tempnode);
-	else if (key > pnode->NBD_Number)
-		pnode->right = insert(pnode->right, tempnode);
-	else
+	Productptr temp; 
+	if (key < pnode->NBD_Number) {
+		temp = treeInsert(pnode->left, tempnode);
+		pnode->left = temp; 
+		temp->parent = pnode; 
+	}
+	else if (key > pnode->NBD_Number) {
+		temp = treeInsert(pnode->right, tempnode);
+		pnode->right = temp;
+		temp->parent = pnode;
+	}
+	else {
 		return pnode;
+	}
 
 	// update height of ancestor node 
 	pnode->treeHeight = 1 + max(treeHeight(pnode->left), treeHeight(pnode->right)); 
@@ -91,6 +103,80 @@ Productptr insert(Productptr pnode, Productptr tempnode) {
 	return pnode;
 }
 
+// TODO: change pnode to node
+Productptr treeDelete(Productptr pnode, int key) {
+	if (pnode == NULL)
+		return pnode; 
+	if (key < pnode->NBD_Number)
+		pnode->left = treeDelete(pnode->left, key);
+	else if (key > pnode->NBD_Number)
+		pnode->right = treeDelete(pnode->right, key); 
+	else {
+		// if node has only one child or no child
+		if ((pnode->left == NULL) || (pnode->right == NULL)) {
+			Productptr temp = pnode->left ? pnode->left : pnode->right; 
+
+			// no children
+			if (temp == NULL) {
+				temp = pnode;
+				pnode = NULL; 
+			}
+			// one child
+			else 
+				*pnode = *temp; 
+			free(temp); 				
+		}
+		// node with two children
+		else {
+			Productptr temp = treeMinimum(pnode->right); 
+
+			pnode->NBD_Number = temp->NBD_Number;
+			pnode->long_name = temp->long_name;
+			pnode->manufacturer = temp->manufacturer;
+			pnode->energy = temp->energy;
+			pnode->carbs = temp->carbs;
+			pnode->fat = temp->fat;
+			pnode->protein = temp->protein;
+			pnode->serving_size = temp->serving_size;
+			pnode->serving_size_units = temp->serving_size_units;
+			pnode->household_serving_size = temp->household_serving_size;
+			pnode->household_serving_size_units = temp->household_serving_size_units;
+
+			pnode->right = treeDelete(pnode->right, temp->NBD_Number); 
+		}
+	}
+
+	if (pnode == NULL)
+		return pnode; 
+
+	pnode->treeHeight = max(treeHeight(pnode->left), treeHeight(pnode->right)) + 1; 
+	int balanceFactor = getBalanceFactor(pnode); 
+
+	// if tree becomes unbalanced, do one of the four cases
+	// left left case
+	if (balanceFactor > 1 && getBalanceFactor(pnode->left) >= 0)
+		return rightRotate(pnode); 
+	// right right case
+	if (balanceFactor < -1 && getBalanceFactor(pnode->right) <= 0)
+		return leftRotate(pnode); 
+	// left right case
+	if (balanceFactor > 1 && getBalanceFactor(pnode->left) < 0) {
+		pnode->left = leftRotate(pnode->left); 
+		return rightRotate(pnode); 
+	}
+	// right left case
+	if (balanceFactor < -1 && getBalanceFactor(pnode->right) > 0) {
+		pnode->right = rightRotate(pnode->right); 
+		return leftRotate(pnode); 
+	}
+	return pnode; 
+}
+
+// TODO: should I change NBD_number to "key" for consistency?
+Productptr treeUpdate(Productptr root, Productptr newData, int key) {
+
+}
+
 Productptr rightRotate(Productptr y) {
 	Productptr x = y->left; 
 	Productptr beta = x->right; 
@@ -114,6 +200,40 @@ Productptr leftRotate(Productptr x) {
 	x->treeHeight = max(treeHeight(x->left), treeHeight(x->right)) + 1;
 	y->treeHeight = max(treeHeight(y->left), treeHeight(y->right)) + 1;
 
+	return y; 
+}
+
+Productptr treeMinimum(Productptr pnode) {
+	while (pnode->left != NULL)
+		pnode = pnode->left; 
+	return pnode; 
+}
+
+Productptr treeMaximum(Productptr pnode) {
+	while (pnode->right != NULL)
+		pnode = pnode->right;
+	return pnode;
+}
+
+Productptr treeSuccessor(Productptr pnode) {
+	if (pnode->right != NULL)
+		return treeMinimum(pnode->right);
+	Productptr y = pnode->parent; 
+	while (y != NULL && pnode == y->right) {
+		pnode = y; 
+		y = y->parent; 
+	}
+	return y; 
+}
+
+Productptr treePredecessor(Productptr pnode) {
+	if (pnode->left != NULL)
+		return treeMinimum(pnode->left);
+	Productptr y = pnode->parent; 
+	while (y != NULL && pnode == y->left) {
+		pnode = y; 
+		y = y->parent; 
+	}
 	return y; 
 }
 

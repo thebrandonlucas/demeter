@@ -2,49 +2,64 @@
 #include <stdlib.h>
 #include <string.h>
 #include "product.h"
-
-Productptr loadProductData(char* filename, Productptr root) {
-	FILE* filestream;
-	char buffer[BUFFER_SIZE];
-	filestream = fopen(filename, "r");
-	//fgets(buffer, sizeof(buffer), filestream);
-	char* token;
-	Productptr tempnode = palloc(); 
-	while (fgets(buffer, sizeof(buffer), filestream) != NULL) {
-		token = strtok(buffer, "~");
-		tempnode->NBD_Number = atoi(token); token = strtok(NULL, "~");
-		tempnode->long_name = token; token = strtok(NULL, "~");
-		tempnode->manufacturer = token; token = strtok(NULL, "~");
-		tempnode->energy = atof(token); token = strtok(NULL, "~");
-		tempnode->carbs = atof(token); token = strtok(NULL, "~");
-		tempnode->fat = atof(token); token = strtok(NULL, "~");
-		tempnode->protein = atof(token); token = strtok(NULL, "~");
-		tempnode->serving_size = atof(token); token = strtok(NULL, "~");
-		tempnode->serving_size_units = token; token = strtok(NULL, "~");
-		// catch potential null values, place in identifier -999, FIXME: would 0.0 suffice?
-		tempnode->household_serving_size = token != NULL ? atof(token) : -999.0; token = strtok(NULL, "~");
-		tempnode->household_serving_size_units = token; token = strtok(NULL, "~"); 
-		root = insert(root, tempnode); 
-	}
-	return root; 
-}
-
-void printMenu() {
-	printf("1 - List Your Summary\n"); 
-	printf("2 - Add Meal\n"); 
-	printf("3 - Update Meal\n"); 
-	printf("4 - Delete Meal\n"); 
-	printf("5 - Exit\n\n"); 
-}
+#include "auxiliary.h"
 
 int main() {
 	system("clear"); 
 	char* productFile = "food_database.csv";
 	Productptr root = NULL; 
 	root = loadProductData(productFile, root); 
+	//printf("%d", root->NBD_Number); 
 
-	preOrder(root); 
+	//root = treeDelete(root, 45226701);
+	//Productptr temp = treePredecessor(temp); 
+	//printf("%d", temp->NBD_Number); 
+	//printf("%d", temp->parent->NBD_Number); 
+	//Productptr pnode = palloc(); 
+	//printf("%s", root->long_name); 
+	//pnode = search(root, 45200822); 
+	//printf("%s", pnode->manufacturer); 
+	//preOrder(root); 
+
+	//Productptr p1 = palloc(); 
+	//p1->NBD_Number = 9;
+	//Productptr p2 = palloc();
+	//p2->NBD_Number = 5;
+	//Productptr p3 = palloc();
+	//p3->NBD_Number = 10;
+	//Productptr p4 = palloc();
+	//p4->NBD_Number = 0;
+	//Productptr p5 = palloc();
+	//p5->NBD_Number = 6;
+	//Productptr p6 = palloc();
+	//p6->NBD_Number = 6;
+	//Productptr p7 = palloc();
+	//p7->NBD_Number = 11;
+	//Productptr p8 = palloc();
+	//p8->NBD_Number = -1;
+	//Productptr p9 = palloc();
+	//p9->NBD_Number = 1;
+	//Productptr p10 = palloc();
+	//p10->NBD_Number = 2;
+
+	//root = treeInsert(root, p1); 
+	//root = treeInsert(root, p2);
+	//root = treeInsert(root, p3);
+	//root = treeInsert(root, p4);
+	//root = treeInsert(root, p5);
+	//root = treeInsert(root, p6);
+	//root = treeInsert(root, p7);
+	//root = treeInsert(root, p8);
+	//root = treeInsert(root, p9);
+	//root = treeInsert(root, p10);
+
+	Productptr pnode = palloc(); 
+
+	//preOrder(root); 
+	printf("%d ", root->NBD_Number); 
+	root = treeDelete(root, 45226701);
+	//if (root == NULL) printf("root is null"); 
+	printf("%d", root->NBD_Number); 
+	//preOrder(root); 
 	return 0; 
 }
-
-

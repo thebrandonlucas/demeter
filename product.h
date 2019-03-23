@@ -25,6 +25,7 @@ typedef struct pnode {
 	int treeHeight; 
 	Productptr left; 
 	Productptr right; 
+	Productptr parent; 
 } ProductNode;
 
 // Serves as double-inclusion guard
@@ -42,12 +43,29 @@ Productptr palloc(void);
 // A function to create a new product node
 Productptr newProductNode(Productptr tempnode);
 
+// Find node with the matching NBD_Number (key)
+Productptr treeSearch(Productptr root, int key); 
+
 // Insert function
-Productptr insert(Productptr pnode, Productptr tempnode);
+Productptr treeInsert(Productptr pnode, Productptr tempnode);
+
+// Delete a node
+Productptr treeDelete(Productptr root, int key); 
+
+// Update contents of node with key
+Productptr treeUpdate(Productptr root, Productptr newData, int key);
 
 // Auxiliary rotate functions
 Productptr rightRotate(Productptr y); 
 Productptr leftRotate(Productptr x);
+
+// To get the Minimum and Maximum nodes
+Productptr treeMinimum(Productptr pnode); 
+Productptr treeMaximum(Productptr pnode); 
+
+// Get successor and predecessor nodes
+Productptr treeSuccessor(Productptr pnode); 
+Productptr treePredecessor(Productptr pnode);
 
 // balance factor of node N
 int getBalanceFactor(Productptr N); 
