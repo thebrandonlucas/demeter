@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "auxiliary.h"
 #include "product.h"
 
 char *mallocopy(char* a, char* b, size_t n); 
-int strToInt(char* str); 
 
 Productptr loadProductData(char* filename, Productptr root) {
 	FILE* filestream;
@@ -34,12 +34,40 @@ Productptr loadProductData(char* filename, Productptr root) {
 	return root;
 }
 
-void printMenu() {
+void printMainMenu() {
+	system("clear"); 
 	printf("1 - List Your Summary\n");
 	printf("2 - Add Meal\n");
 	printf("3 - Update Meal\n");
 	printf("4 - Delete Meal\n");
 	printf("5 - Exit\n\n");
+}
+
+void printLoginMenu() {
+	system("clear"); 
+	printf("1 - Login\n"); 
+	printf("2 - New User\n"); 
+	printf("\nPlease choose an option: "); 
+}
+
+void printPasswordMenu() {
+
+}
+
+void createNewUser() {
+	char *username = ""; 
+	char *password; 
+	system("clear"); 
+	printf("Welcome!\n\n"); 
+	printf("Please create a username and password\n\n");
+	printf("Username: ");
+	scanf("%s", username); 
+	//printf("Password: "); 
+	//password = getpass("Password: "); 
+	//scanf("%s", &password); 
+
+	// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+	printf("Success! Created new diary for %s", username); 
 }
 
 char *mallocopy(char* a, char* b, size_t n) {

@@ -1,6 +1,5 @@
 LDFLAGS=-lncurses
-CC=gcc
 CFLAGS=-W
 
-demetermake: demeter.o product_functions.o auxiliary_functions.o
-	$(CC) -o demeter demeter.o product_functions.o auxiliary_functions.o
+demetermake: demeter.c product_functions.c auxiliary_functions.c
+	gcc -o demeter -std=c11 demeter.c product_functions.c auxiliary_functions.c
