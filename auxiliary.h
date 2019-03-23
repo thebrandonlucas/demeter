@@ -14,4 +14,5 @@ void printMainMenu();
 
 // Allocate for string size and copy to new string
 char *mallocopy(char* a, char* b, size_t n); 
+
 #endif

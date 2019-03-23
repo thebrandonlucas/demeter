@@ -4,6 +4,7 @@
 #include "product.h"
 
 char *mallocopy(char* a, char* b, size_t n); 
+int strToInt(char* str); 
 
 Productptr loadProductData(char* filename, Productptr root) {
 	FILE* filestream;
@@ -15,7 +16,8 @@ Productptr loadProductData(char* filename, Productptr root) {
 	Productptr tempnode = palloc();
 	while (fgets(buffer, sizeof(buffer), filestream) != NULL) {
 		token = strtok(buffer, "~"); 
-		tempnode->NBD_Number = atoi(token); token = strtok(NULL, "~"); 
+		//printf("%s\n", token); 
+		tempnode->NBD_Number = atoi(token); token = strtok(NULL, "~");
 		tempnode->long_name = mallocopy(tempnode->long_name, token, n);  token = strtok(NULL, "~");
 		tempnode->manufacturer = mallocopy(tempnode->manufacturer, token, 500); token = strtok(NULL, "~");
 		tempnode->energy = atof(token); token = strtok(NULL, "~");

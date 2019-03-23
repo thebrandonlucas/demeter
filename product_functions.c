@@ -1,6 +1,7 @@
 #include <stdlib.h>
 // TODO: delete stdio after deleting preorder
 #include <stdio.h>
+#include <string.h>
 #include "product.h"
 
 /*
@@ -54,17 +55,17 @@ Productptr treeSearch(Productptr root, int key) {
 
 // TODO: Change tempnode to "data" or some better name
 Productptr treeInsert(Productptr pnode, Productptr tempnode) {
-	int key = tempnode->NBD_Number; 
+	char *key = tempnode->long_name; 
 	if (pnode == NULL)
 		return newProductNode(tempnode); 
 
 	Productptr temp; 
-	if (key < pnode->NBD_Number) {
+	if (strcmp(key, pnode->long_name) < 0) {
 		temp = treeInsert(pnode->left, tempnode);
 		pnode->left = temp; 
 		temp->parent = pnode; 
 	}
-	else if (key > pnode->NBD_Number) {
+	else if (strcmp(key, pnode->long_name) > 0) {
 		temp = treeInsert(pnode->right, tempnode);
 		pnode->right = temp;
 		temp->parent = pnode;
@@ -79,24 +80,24 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	// get balance factor to check whether this node is now unbalanced
 	int balanceFactor = getBalanceFactor(pnode); 
 
-	//// left left case
-	if (balanceFactor > 1 && key < pnode->left->NBD_Number)
+	// left left case
+	if (balanceFactor > 1 && strcmp(key, pnode->left->long_name) < 0)
 		return rightRotate(pnode); 
 
 	// right right case 
-	if (balanceFactor < -1 && key > pnode->right->NBD_Number)
+	if (balanceFactor < -1 && strcmp(key, pnode->right->long_name) > 0)
 		return leftRotate(pnode); 
 
 	// left right case 
-	if (balanceFactor > 1 && key > pnode->left->NBD_Number) {
+	if (balanceFactor > 1 && strcmp(key, pnode->left->long_name) > 0) {
 		pnode->left = leftRotate(pnode->left); 
 		return rightRotate(pnode); 
 	}
 
 	// right left case 
-	if (balanceFactor < -1 && key < pnode->right->NBD_Number) {
-		pnode->left = rightRotate(pnode->right); 
-		return rightRotate(pnode); 
+	if (balanceFactor < -1 && strcmp(key, pnode->right->long_name) < 0) {
+		pnode->right = rightRotate(pnode->right); 
+		return leftRotate(pnode); 
 	}
 	
 	// return the original node
@@ -251,7 +252,7 @@ void preOrder(Productptr root)
 {
 	if (root != NULL)
 	{
-		printf("%d ", root->NBD_Number);
+		printf("%s ", root->long_name);
 		preOrder(root->left);
 		preOrder(root->right);
 	}
