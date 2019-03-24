@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "auxiliary.h"
 #include "product.h"
 #include "menu.h"
@@ -9,6 +10,12 @@
 char *mallocopy(char* a, char* b, size_t n); 
 int fileExists(char *filename); 
 void printMenuHeader(); 
+
+void init() {
+	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
+	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
+	diary = (Diaryptr)malloc(sizeof(Diaryptr));
+}
 
 Productptr loadProductData(char* filename, Productptr root) {
 	FILE* filestream;
@@ -37,9 +44,6 @@ Productptr loadProductData(char* filename, Productptr root) {
 }
 
 void createNewUserDiary() {
-	username = (char*)malloc(sizeof(char)); 
-	char *filename = (char*)malloc(sizeof(char)); 
-	FILE *diary;
 	int fileAlreadyExists = 1; 
 	while (fileAlreadyExists == 1) {
 		system("clear");
@@ -60,21 +64,22 @@ void createNewUserDiary() {
 		}
 	}
 	system("clear"); 
-	diary = fopen(filename, "a+");
+	diaryFile = fopen(filename, "a");
+	// number of entries for new file is 0
+	fputs("0", diaryFile); 
+	loadDiary(diaryFile); 
 	printf("Success! Created new diary for %s\n", username);
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
 	// TODO: free username and filename at end of program
-	//free(username); 
-	//free(filename); 
-	//free(temp);
 }
 
 int chooseMainMenuOption() {
 	int option; 
-	printf("Choose an option: "); 
+	//printf("Choose an option: "); 
 	//getchar(); 
-	scanf("%d", &option); 
+	//sscanf(stdin, "%d", &option); 
+	option = readInt(stdin, "Choose an option: "); 
 	
 	switch (option) {
 		case 1:
@@ -93,9 +98,10 @@ int chooseMainMenuOption() {
 }
 
 void login() {
-	username = (char*)malloc(sizeof(char));
-	char *filename = (char*)malloc(sizeof(char));
-	FILE *diary;
+	//username = (char*)malloc(sizeof(char));
+	//char *filename = (char*)malloc(sizeof(char));
+	//filename
+	//FILE *diary;
 	int fileAlreadyExists = 0;
 	while (fileAlreadyExists == 0) {
 		system("clear");
@@ -103,6 +109,7 @@ void login() {
 		printf("Sign-in\n\n"); 
 		printf("Enter username: ");
 		scanf("%s", username);
+		//fgets(username, sizeof(username), stdin); 
 		strcpy(filename, username);
 		strcat(filename, ".log");
 
@@ -116,7 +123,8 @@ void login() {
 			getchar(); getchar();
 		}
 	}
-	diary = fopen(filename, "a+");
+	diaryFile = fopen(filename, "a+");
+	
 }
 
 char *mallocopy(char* a, char* b, size_t n) {
@@ -130,4 +138,44 @@ int fileExists(char *filename) {
 	if (file == NULL)
 		return 0; 
 	return 1; 
+}
+
+void uppercase(char *str) {
+	int len = strlen(str); 
+	for (int i = 0; i < len; i++) {
+		if (islower(str[i])) {
+			str[i] = toupper((unsigned char)str[i]);
+		}
+	}
+}
+
+// Borrowed from https://stackoverflow.com/questions/26583717/how-to-scanf-only-integer
+int readInt(FILE *input, char *prompt) {
+	char *ptr = (char*)malloc(sizeof(char));
+	char *str = (char*)malloc(sizeof(char));
+	int num;
+
+	while (fgets(str, sizeof(char*), input)) {
+		num = strtol(str, &ptr, 10); 
+		if (ptr == str || *ptr != '\n')
+			printf("%s", prompt);
+		else
+			break; 
+	}
+	return num; 
+}
+
+char *removeSpaces(char *str) {
+	char *dest = str;
+	while (*str != 0) {
+		if (*str != ' ') {
+			*dest = *str;
+			dest += 1; 
+		}
+		str += 1;
+	}
+	*dest = 0;
+	return dest; 
+	//printf("%s", dest); 
+	//*str = *dest; 
 }

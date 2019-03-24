@@ -6,6 +6,9 @@
 	help the main program load data and print menus
 */
 
+// Initialize all global variables on startup
+void init(); 
+
 // Loads data from the food_database.csv file into the tree
 // starting at root
 Productptr loadProductData(char* filename, Productptr root); 
@@ -24,4 +27,13 @@ char *mallocopy(char *a, char *b, size_t n);
 
 // Check if a file exists
 int fileExists(char *filename); 
+
+// Convert string to upper case
+void uppercase(char *str); 
+
+// Read and parse integers from stdin
+int readInt(FILE *input, char *prompt);
+
+// Remove spaces from a string for string comparison
+char *removeSpaces(char *str); 
 #endif

@@ -37,6 +37,13 @@ void printLoadingMenu() {
 	printf("Loading. Pleeeeease wait."); 
 	system("clear"); 
 }
+
 void printMenuHeader() {
 	printf("* * * Demeter Nutrition Tracker -- Main Menu * * *\n\n");
+}
+
+void printChoiceSelectErrorMessage() {
+		printf("Please enter an integer corresponding to the correct\n");
+		printf("choice. Error...Exiting\n");
+		exit(0);
 }

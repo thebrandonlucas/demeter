@@ -69,8 +69,11 @@ Productptr treeMaximum(Productptr pnode);
 Productptr treeSuccessor(Productptr pnode); 
 Productptr treePredecessor(Productptr pnode);
 
-// balance factor of node N
+// Balance factor of node N
 int getBalanceFactor(Productptr N); 
+
+// Print the results of the closest search results
+void printSearchResults(Productptr pnode); 
 
 // TODO: DELETE
 void preOrder(Productptr root); 

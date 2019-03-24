@@ -5,15 +5,17 @@ typedef struct diary *Diaryptr;
 
 extern char *username;
 extern char *filename; 
-extern FILE *diary; 
+extern FILE *diaryFile; 
+extern Diaryptr diary; 
 
 typedef struct diary {
 	int numEntries; 
-	char *date;
-	char *username; 
-	char *filename; 
-	Productptr *entries[]; 
+	char *time;
+	Productptr entries; 
 } Diary;
+
+// load data from file into diary
+void loadDiary(FILE *diaryFile);
 
 // List current entries in diary
 void listAllEntries();

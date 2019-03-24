@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "product.h"
+#include "auxiliary.h"
 
 /*
 	This file provides the definitions for functions
@@ -244,6 +245,23 @@ int getBalanceFactor(Productptr N) {
 	if (N == NULL)
 		return 0;
 	return treeHeight(N->left) - treeHeight(N->right);
+}
+
+void printSearchResults(Productptr pnode) {
+	Productptr temp = palloc();
+	temp = pnode;
+	int counter = 1; 
+	printf("\n%d - %s\n\n", counter, pnode->long_name);
+	for (int i = 0; i < 2; i++) {
+		temp = treeSuccessor(temp);
+		counter++; 
+		printf("%d - %s\n\n", counter, temp->long_name);
+	}
+	for (int i = 0; i < 2; i++) {
+		temp = treePredecessor(temp);
+		counter++; 
+		printf("%d - %s\n\n", counter, temp->long_name);
+	}
 }
 
 // A utility function to print preorder traversal 

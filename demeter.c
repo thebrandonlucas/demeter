@@ -8,20 +8,18 @@
 
 int main() {
 	system("clear"); 
+	init(); 
 	char *productFile = "food_database.csv";
 	//Productptr root = NULL; 
-	printLoadingMenu();
+	//printLoadingMenu();
 	root = loadProductData(productFile, root); 
-	Productptr pnode = root->left; 
-	printf("%d %d", root->NBD_Number, pnode->parent->NBD_Number); 
+	//Productptr pnode = root->left; 
+	//printf("%d %d", root->NBD_Number, pnode->parent->NBD_Number); 
 	printLoginMenu(); 
 	int choice; 
-	if (scanf("%d", &choice) != 1) {
-		printf("Please enter an integer corresponding to the correct\n");
-		printf("choice. Error...Exiting\n");
-		exit(0); 
-	} 
-
+	choice = readInt(stdin, ""); 
+	if (choice == 0)
+		printChoiceSelectErrorMessage(); 
 	switch(choice) {
 		case 1: 
 			login();

@@ -22,4 +22,7 @@ void printLoadingMenu();
 
 // Print the Demeter header
 void printMenuHeader();
+
+// Error message for bad user input 
+void printChoiceSelectErrorMessage(); 
 #endif
