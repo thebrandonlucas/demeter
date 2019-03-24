@@ -1,5 +1,9 @@
 a.out
 demeter
 brandon.log
-*.csv
+Nutrients.csv
+Products.csv
+food_database.csv
+Serving_size.csv
+Derivation_Code_Description.csv
 *.o

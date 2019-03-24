@@ -48,7 +48,6 @@ Productptr newProductNode(Productptr tempnode) {
 }
 
 Productptr treeSearch(Productptr root, char *key) {
-	printf("%s\n", root->long_name); 
 	if ((root->left == NULL || root->right == NULL) || strcmp(key, root->long_name) == 0)
 		return root; 
 	if (strcmp(key, root->long_name) < 0)
