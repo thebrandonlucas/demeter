@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "menu.h"
 #include "product.h" 
 #include "auxiliary.h"
-
-//#include ""
+#include "diary.h"
 
 int main() {
 	system("clear"); 
@@ -13,23 +13,23 @@ int main() {
 	//root = loadProductData(productFile, root); 
 
 	printLoginMenu(); 
-	char line[BUFFER_SIZE]; 
+	char line[BUFFER_SIZE];
 	int choice; 
-	fgets(line, sizeof(line), stdin); 
-	if (sscanf(line, "%d", &choice) != 1) {
+	if (scanf("%d", &choice) != 1) {
 		printf("Please enter an integer corresponding to the correct\n");
-		printf("choice. Error...Exiting");
+		printf("choice. Error...Exiting\n");
 		exit(0); 
 	} 
 
 	switch(choice) {
 		case 1: 
-			printPasswordMenu();
+			login();
+			break; 
 		case 2: 
 			createNewUserDiary();
 			printMainMenu(); 
-
+			chooseMainMenuOption(); 
+			break; 
 	}
-
 	return 0; 
 }

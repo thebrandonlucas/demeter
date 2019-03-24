@@ -3,8 +3,12 @@
 #include <string.h>
 #include "auxiliary.h"
 #include "product.h"
+#include "menu.h"
+#include "diary.h"
 
 char *mallocopy(char* a, char* b, size_t n); 
+int fileExists(char *filename); 
+void printMenuHeader(); 
 
 Productptr loadProductData(char* filename, Productptr root) {
 	FILE* filestream;
@@ -34,37 +38,18 @@ Productptr loadProductData(char* filename, Productptr root) {
 	return root;
 }
 
-void printMainMenu() {
-	system("clear"); 
-	printf("1 - List Your Summary\n");
-	printf("2 - Add Meal\n");
-	printf("3 - Update Meal\n");
-	printf("4 - Delete Meal\n");
-	printf("5 - Exit\n\n");
-}
-
-void printLoginMenu() {
-	system("clear"); 
-	printf("1 - Login\n"); 
-	printf("2 - New User\n"); 
-	printf("\nPlease choose an option: "); 
-}
-
-void printPasswordMenu() {
-
-}
-
 void createNewUserDiary() {
-	char *username = (char*)malloc(sizeof(char)); 
+	username = (char*)malloc(sizeof(char)); 
 	char *filename = (char*)malloc(sizeof(char)); 
 	char line[BUFFER_SIZE];
-	FILE *diary; 
+	FILE *diary;
+	int fileAlreadyExists; 
 	system("clear"); 
 	printf("Welcome!\n\n"); 
 	printf("Please create a username and password\n\n");
 	printf("Username: ");
-	fgets(username, sizeof(username), stdin); 
-	sscanf(line, "%s", username); 
+	//username = fgets(username, sizeof(username), stdin); 
+	scanf("%s", username); 
 	//printf("Password: "); 
 	//password = getpass("Password: "); 
 	//scanf("%s", &password); 
@@ -72,17 +57,64 @@ void createNewUserDiary() {
 	// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
 	strcpy(filename, username); 
 	strcat(filename, ".log");
-	diary = fopen(filename, "a+");
+	fileAlreadyExists = fileExists(filename); 
+	// TODO: why not just check if user exists already by checking if matching file
+	// exists?
+	if (fileAlreadyExists == 0)
+		diary = fopen(filename, "a+");
+	else {
+		printf("Error! File %s already exists. Exiting.", filename);
+		exit(0); 
+	}
 	printf("Success! Created new diary for %s\n", username);
 	printf("Press any key to continue: "); 
-	getchar(); 
+	getchar(); getchar(); 
 	free(username); 
 	free(filename); 
 	//free(temp);
-}	
+}
+
+int chooseMainMenuOption() {
+	int option; 
+	printf("Choose an option: "); 
+	//getchar(); 
+	scanf("%d", &option); 
+	
+	switch (option) {
+		case 1:
+			listAllEntries(); 
+			break; 
+		case 2: 
+			addDiaryEntry();
+			break; 
+		case 3: 
+
+			break; 
+		case 4: 
+
+			break; 
+	}
+}
+
+void login() {
+	system("clear"); 
+	printMenuHeader(); 
+	printf("Enter username: "); 
+	scanf("%s", username); 
+	strcpy(filename, username); 
+	strcat(filename, ".log"); 
+
+}
 
 char *mallocopy(char* a, char* b, size_t n) {
 	a = (char*)malloc(n * sizeof(char));
 	strncpy(a, b, n - 1); a[n - 1] = 0;
 	return a; 
+}
+
+int fileExists(char *filename) {
+	FILE *file = fopen(filename, "r"); 
+	if (file == NULL)
+		return 0; 
+	return 1; 
 }

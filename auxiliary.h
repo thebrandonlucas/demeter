@@ -6,23 +6,22 @@
 	help the main program load data and print menus
 */
 
-
 // Loads data from the food_database.csv file into the tree
 // starting at root
 Productptr loadProductData(char* filename, Productptr root); 
 
-// Displays the starting menu
-void printMainMenu();
-
-// Displays login menu
-void printLoginMenu(); 
-
-// Asks for username and password to login
-void printPasswordMenu(); 
-
 // Print menu to create new user diary
 void createNewUserDiary();
 
+// Choose a menu option and perform the appropriate action
+int chooseMainMenuOption(); 
+
+// Login functionality for returning users
+void login(); 
+
 // Allocate for string size and copy to new string
-char *mallocopy(char* a, char* b, size_t n); 
+char *mallocopy(char *a, char *b, size_t n); 
+
+// Check if a file exists
+int fileExists(char *filename); 
 #endif
