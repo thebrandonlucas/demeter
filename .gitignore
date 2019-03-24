@@ -7,3 +7,4 @@ food_database.csv
 Serving_size.csv
 Derivation_Code_Description.csv
 *.o
+*.log

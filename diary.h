@@ -22,4 +22,7 @@ void listAllEntries();
 
 // Add a new entry to a diary
 void addDiaryEntry(); 
+
+// Write diary data to file at program end
+void writeDiary(); 
 #endif

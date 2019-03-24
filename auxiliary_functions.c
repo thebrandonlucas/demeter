@@ -67,12 +67,39 @@ void createNewUserDiary() {
 	diaryFile = fopen(filename, "w+");
 	// number of entries for new file is 0
 	fputs("0", diaryFile); 
-
 	loadDiary(diaryFile); 
 	printf("Success! Created new diary for %s\n", username);
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
 	// TODO: free username and filename at end of program
+}
+
+void login() {
+	int fileAlreadyExists = 0;
+	while (fileAlreadyExists == 0) {
+		system("clear");
+		printMenuHeader();
+		printf("Sign-in\n\n");
+		printf("Enter username: ");
+		scanf("%s", username);
+		//fgets(username, sizeof(username), stdin); 
+		strcpy(filename, username);
+		strcat(filename, ".log");
+
+		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+		strcpy(filename, username);
+		strcat(filename, ".log");
+		fileAlreadyExists = fileExists(filename);
+		if (fileAlreadyExists == 0) {
+			system("clear");
+			printf("Error! User %s does not exist. Please try again or enter new username.", filename);
+			getchar(); getchar();
+		}
+	}
+	diaryFile = fopen(filename, "a+");
+	// number of entries for new file is 0
+	//fputs("0", diaryFile);
+	loadDiary(diaryFile);
 }
 
 int chooseMainMenuOption() {
@@ -96,36 +123,6 @@ int chooseMainMenuOption() {
 
 			break; 
 	}
-}
-
-void login() {
-	//username = (char*)malloc(sizeof(char));
-	//char *filename = (char*)malloc(sizeof(char));
-	//filename
-	//FILE *diary;
-	int fileAlreadyExists = 0;
-	while (fileAlreadyExists == 0) {
-		system("clear");
-		printMenuHeader();
-		printf("Sign-in\n\n"); 
-		printf("Enter username: ");
-		scanf("%s", username);
-		//fgets(username, sizeof(username), stdin); 
-		strcpy(filename, username);
-		strcat(filename, ".log");
-
-		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
-		strcpy(filename, username);
-		strcat(filename, ".log");
-		fileAlreadyExists = fileExists(filename);
-		if (fileAlreadyExists == 0) {
-			system("clear");
-			printf("Error! User %s does not exist. Please try again or enter new username.", filename);
-			getchar(); getchar();
-		}
-	}
-	diaryFile = fopen(filename, "a+");
-	
 }
 
 char *mallocopy(char* a, char* b, size_t n) {
