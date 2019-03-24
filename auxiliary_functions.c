@@ -14,13 +14,11 @@ Productptr loadProductData(char* filename, Productptr root) {
 	FILE* filestream;
 	char buffer[BUFFER_SIZE];
 	filestream = fopen(filename, "r");
-	//fgets(buffer, sizeof(buffer), filestream);
 	char *token;
 	int n = 500; 
 	Productptr tempnode = palloc();
 	while (fgets(buffer, sizeof(buffer), filestream) != NULL) {
 		token = strtok(buffer, "~"); 
-		//printf("%s\n", token); 
 		tempnode->NBD_Number = atoi(token); token = strtok(NULL, "~");
 		tempnode->long_name = mallocopy(tempnode->long_name, token, n);  token = strtok(NULL, "~");
 		tempnode->manufacturer = mallocopy(tempnode->manufacturer, token, 500); token = strtok(NULL, "~");
@@ -41,36 +39,34 @@ Productptr loadProductData(char* filename, Productptr root) {
 void createNewUserDiary() {
 	username = (char*)malloc(sizeof(char)); 
 	char *filename = (char*)malloc(sizeof(char)); 
-	char line[BUFFER_SIZE];
 	FILE *diary;
-	int fileAlreadyExists; 
-	system("clear"); 
-	printf("Welcome!\n\n"); 
-	printf("Please create a username and password\n\n");
-	printf("Username: ");
-	//username = fgets(username, sizeof(username), stdin); 
-	scanf("%s", username); 
-	//printf("Password: "); 
-	//password = getpass("Password: "); 
-	//scanf("%s", &password); 
+	int fileAlreadyExists = 1; 
+	while (fileAlreadyExists == 1) {
+		system("clear");
+		printMenuHeader(); 
+		printf("Welcome!\n\n"); 
+		printf("Please create a username and password\n\n");
+		printf("Username: ");
+		scanf("%s", username); 
 
-	// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
-	strcpy(filename, username); 
-	strcat(filename, ".log");
-	fileAlreadyExists = fileExists(filename); 
-	// TODO: why not just check if user exists already by checking if matching file
-	// exists?
-	if (fileAlreadyExists == 0)
-		diary = fopen(filename, "a+");
-	else {
-		printf("Error! File %s already exists. Exiting.", filename);
-		exit(0); 
+		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+		strcpy(filename, username); 
+		strcat(filename, ".log");
+		fileAlreadyExists = fileExists(filename); 
+		if (fileAlreadyExists == 1) {
+			system("clear"); 
+			printf("Error! File %s already exists. Please choose another name.", filename);
+			getchar(); getchar(); 
+		}
 	}
+	system("clear"); 
+	diary = fopen(filename, "a+");
 	printf("Success! Created new diary for %s\n", username);
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
-	free(username); 
-	free(filename); 
+	// TODO: free username and filename at end of program
+	//free(username); 
+	//free(filename); 
 	//free(temp);
 }
 
@@ -97,13 +93,30 @@ int chooseMainMenuOption() {
 }
 
 void login() {
-	system("clear"); 
-	printMenuHeader(); 
-	printf("Enter username: "); 
-	scanf("%s", username); 
-	strcpy(filename, username); 
-	strcat(filename, ".log"); 
+	username = (char*)malloc(sizeof(char));
+	char *filename = (char*)malloc(sizeof(char));
+	FILE *diary;
+	int fileAlreadyExists = 0;
+	while (fileAlreadyExists == 0) {
+		system("clear");
+		printMenuHeader();
+		printf("Sign-in\n\n"); 
+		printf("Enter username: ");
+		scanf("%s", username);
+		strcpy(filename, username);
+		strcat(filename, ".log");
 
+		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+		strcpy(filename, username);
+		strcat(filename, ".log");
+		fileAlreadyExists = fileExists(filename);
+		if (fileAlreadyExists == 0) {
+			system("clear");
+			printf("Error! User %s does not exist. Please try again or enter new username.", filename);
+			getchar(); getchar();
+		}
+	}
+	diary = fopen(filename, "a+");
 }
 
 char *mallocopy(char* a, char* b, size_t n) {

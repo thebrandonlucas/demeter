@@ -30,6 +30,8 @@ typedef struct pnode {
 	Productptr parent; 
 } ProductNode;
 
+extern Productptr root; 
+
 // Serves as double-inclusion guard
 // A function for finding the max element in a tree
 int max(int a, int b);
@@ -44,7 +46,7 @@ Productptr palloc(void);
 Productptr newProductNode(Productptr tempnode);
 
 // Find node with the matching NBD_Number (key)
-Productptr treeSearch(Productptr root, int key); 
+Productptr treeSearch(Productptr root, char *key); 
 
 // Insert function
 Productptr treeInsert(Productptr pnode, Productptr tempnode);

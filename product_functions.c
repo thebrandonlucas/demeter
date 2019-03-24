@@ -9,6 +9,8 @@
 	used in the maintenance of the product AVL tree. 
 */
 
+Productptr root = NULL; 
+
 int max(int a, int b) {
 	return (a > b) ? a : b; 
 }
@@ -45,10 +47,11 @@ Productptr newProductNode(Productptr tempnode) {
 	return(pnode); 
 }
 
-Productptr treeSearch(Productptr root, int key) {
-	if (root == NULL || key == root->NBD_Number)
+Productptr treeSearch(Productptr root, char *key) {
+	printf("%s\n", root->long_name); 
+	if ((root->left == NULL || root->right == NULL) || strcmp(key, root->long_name) == 0)
 		return root; 
-	if (key < root->NBD_Number)
+	if (strcmp(key, root->long_name) < 0)
 		return treeSearch(root->left, key);
 	return treeSearch(root->right, key);
 }

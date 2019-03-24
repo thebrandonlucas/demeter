@@ -14,6 +14,12 @@ void printLoginMenu();
 // Asks for username and password to login
 //void printLoginValidationMenu();
 
+// Show food search options
+//void printFoodSearchMenu(); 
+
+// Inform the user of loading on startup
+void printLoadingMenu(); 
+
 // Print the Demeter header
 void printMenuHeader();
 #endif

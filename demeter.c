@@ -9,11 +9,12 @@
 int main() {
 	system("clear"); 
 	char *productFile = "food_database.csv";
-	Productptr root = NULL; 
-	//root = loadProductData(productFile, root); 
-
+	//Productptr root = NULL; 
+	printLoadingMenu();
+	root = loadProductData(productFile, root); 
+	Productptr pnode = root->left; 
+	printf("%d %d", root->NBD_Number, pnode->parent->NBD_Number); 
 	printLoginMenu(); 
-	char line[BUFFER_SIZE];
 	int choice; 
 	if (scanf("%d", &choice) != 1) {
 		printf("Please enter an integer corresponding to the correct\n");
@@ -24,12 +25,19 @@ int main() {
 	switch(choice) {
 		case 1: 
 			login();
+			printMainMenu(); 
+			chooseMainMenuOption(); 
 			break; 
 		case 2: 
 			createNewUserDiary();
 			printMainMenu(); 
 			chooseMainMenuOption(); 
 			break; 
+		case 3: 
+			exit(0); 
 	}
+	//free(username); 
+	//free(filename); 
+	//fclose(diary); 
 	return 0; 
 }

@@ -22,6 +22,7 @@ void printLoginMenu() {
 	printMenuHeader(); 
 	printf("1 - Login\n");
 	printf("2 - New User\n");
+	printf("3 - Exit\n"); 
 	printf("\nPlease choose an option: ");
 }
 
@@ -31,12 +32,11 @@ void printLoginMenu() {
 //	printf("Enter username: "); 
 //}
 
-void printFoodSearchMenu() {
+void printLoadingMenu() {
 	system("clear"); 
-	printMenuHeader(); 
-	printf("Search foods: "); 
+	printf("Loading. Pleeeeease wait."); 
+	system("clear"); 
 }
-
 void printMenuHeader() {
 	printf("* * * Demeter Nutrition Tracker -- Main Menu * * *\n\n");
 }
