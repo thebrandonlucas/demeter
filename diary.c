@@ -25,7 +25,7 @@ void loadDiary(FILE *diaryFile) {
 		exit(0); 
 	}
 	for (int i = 0; i < diary->numEntries; i++) {
-		diary[i].time = (char*)malloc(sizeof(char)*100000); 
+		diary[i].time = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
 		//diary[i].entries = (Productptr)malloc(sizeof(Productptr));
 		fgets(buffer, BUFFER_SIZE, diaryFile);
 		// remove newline
@@ -40,6 +40,7 @@ void loadDiary(FILE *diaryFile) {
 		}
 		pnode = treeSearch(root, token); 
 		diary[i].entries = pnode; 
+		//printf("bbb%s", diary[i].entries->long_name); 
 	}
 	//free(buffer); 
 	//free(token); 
@@ -47,6 +48,60 @@ void loadDiary(FILE *diaryFile) {
 
 void listAllEntries() {
 
+}
+
+void searchDiary(char *key) {
+	int matchIndexCounts[diary->numEntries]; 
+	int bestMatchIndex = 0; 
+	int bestMatchIndexCount = 0; 
+	//printf("asdfasdf"); 
+	//printf("%d", strcmp(key, diary[0].entries->long_name)); 
+	//for (int i = 0; i < diary->numEntries; i++) {
+	//	matchIndexCounts[i] = 0;
+	//	for (int j = 0; j < strlen(key); j++) {
+	//		if (key[j] == diary[i].entries->long_name[j]) {
+	//			matchIndexCounts[i]++; 
+	//		}
+	//	}
+	//	//if (strcmp(key, diary[i].entries->long_name) == 0)
+	//	//	return diary[i]; 
+	//	//else if (strcmp(key, diary[i].entries->long_name) < 0) {
+	//	//}
+	//	if (matchIndexCounts[i] > bestMatchIndexCount) {
+	//		bestMatchIndexCount = matchIndexCounts[i]; 
+	//		bestMatchIndex = i; 
+	//	}
+	//	return diary[bestMatchIndex]; 
+	//}
+	//printf("aa%s", diary[0].entries->long_name);
+	//for (int i = 0; i < diary->numEntries; i++) {
+	//	printf("BEFORE %s\n", diary[i].entries->long_name);
+	//}
+	Productptr pnode = palloc();
+	pnode = treeSearch(root, key);
+	int deleteIndex = 0; 
+	//printf("%s", diary[1].entries->long_name); 
+
+	//for (int i = 0; i < diary->numEntries; i++) {
+	//	printf("AFTER %s\n", diary[i].entries->long_name);
+	//}
+
+
+	//for (int i = 0; i < diary->numEntries; i++) {
+	//	if (diary[i] == NULL) {
+	//		continue; 
+	//	}
+	//	dia
+	//}
+	//printSearchResults(pnode);
+	//return key; 
+}
+
+void printDiarySearchResults(char *key) {
+	//Productptr returnedDiary = palloc(); 
+	//returnedDiary = searchDiary(key);
+	searchDiary(key); 
+	//printf("adsf%s", returnedDiary->long_name); 
 }
 
 void addDiaryEntry() {
@@ -71,9 +126,34 @@ void addDiaryEntry() {
 	free(userInput); 
 }
 
+void deleteDiaryEntry() {
+	char *userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
+	system("clear"); 
+	printMenuHeader(); 
+	printf("Search Diary: "); 
+	fgets(userInput, BUFFER_SIZE, stdin); 
+	uppercase(userInput); 
+	Productptr pnode = palloc(); 
+	pnode = treeSearch(root, userInput); 
+	for (int i = 0; i < diary->numEntries; i++) {
+		if (strcmp(pnode->long_name, diary[i].entries->long_name) == 0) {
+			//if (diary[i].numEntries != diary->numEntries + 1) {
+			for (int j = i; j < diary->numEntries - 1; j++) {
+				//printf("%s", diary[j + 1].time);
+				diary[j].time = diary[j + 1].time;
+				diary[j].entries = diary[j + 1].entries;
+			}
+			//}
+			diary->numEntries--;
+			break;
+		}
+	}
+	writeDiary();
+	free(userInput);
+}
+
 void writeDiary() {
 	diaryFile = fopen(filename, "w"); 
-	//rewind(diaryFile); 
 	fprintf(diaryFile, "%c\n", diary->numEntries + '0'); 
 	char *temp = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
 	for (int i = 0; i < diary->numEntries; i++) {
@@ -86,7 +166,9 @@ void writeDiary() {
 	//for (int i = 0; i < diary->numEntries; i++) {
 	//	free(diary[i].entries); 
 	//}
-	//free(diary->entries); 
-	//fclose(diaryFile); 
+	// figure out how to 
+	//pfree(root); 
+	free(diary->entries); 
+	fclose(diaryFile); 
 }
 

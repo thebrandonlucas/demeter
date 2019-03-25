@@ -42,6 +42,9 @@ int treeHeight(Productptr root);
 // A function to allocate a new product
 Productptr palloc(void);
 
+// Free all nodes at end of program
+void pfree(Productptr root); 
+
 // A function to create a new product node
 Productptr newProductNode(Productptr tempnode);
 

@@ -117,10 +117,9 @@ int chooseMainMenuOption() {
 			addDiaryEntry();
 			break; 
 		case 3: 
-
 			break; 
 		case 4: 
-
+			deleteDiaryEntry();
 			break; 
 	}
 }

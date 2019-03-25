@@ -26,6 +26,19 @@ Productptr palloc(void) {
 	return (Productptr)malloc(sizeof(ProductNode)); 
 }
 
+void pfree(Productptr root) {
+	Productptr temp = palloc();
+	if (root != NULL) {
+		temp = root->left; 
+		free(root->left); 
+		pfree(temp->left); 
+		temp = root->right; 
+		free(root->right); 
+		pfree(root->right); 
+	}
+	free(temp); 
+}
+
 Productptr newProductNode(Productptr tempnode) {
 	Productptr pnode = palloc(); 
 

@@ -20,8 +20,17 @@ void loadDiary(FILE *diaryFile);
 // List current entries in diary
 void listAllEntries();
 
+// Search for an item by name in the diary
+void searchDiary(char *key);
+
+// Print diary search results for delete and update
+void printDiarySearchResults(char *key);
+
 // Add a new entry to a diary
 void addDiaryEntry(); 
+
+// Delete a diary entry
+void deleteDiaryEntry(); 
 
 // Write diary data to file at program end
 void writeDiary(); 
