@@ -15,6 +15,7 @@ void init() {
 	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
 	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	diary = (Diaryptr)malloc(sizeof(Diaryptr));
+	userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 }
 
 Productptr loadProductData(char* filename, Productptr root) {
@@ -78,7 +79,7 @@ void createNewUserDiary() {
 void login() {
 	int fileAlreadyExists = 0;
 	while (fileAlreadyExists == 0) {
-		char *token; 
+		//char *token; 
 		system("clear");
 		printMenuHeader();
 		printf("Sign-in\n\n");
@@ -106,7 +107,7 @@ void login() {
 	//}
 }
 
-int chooseMainMenuOption() {
+void chooseMainMenuOption() {
 	int option; 
 	option = readInt(stdin, "Choose an option: "); 
 	switch (option) {
@@ -117,10 +118,11 @@ int chooseMainMenuOption() {
 			addDiaryEntry();
 			break; 
 		case 3: 
+			deleteDiaryEntry(); 
 			break; 
 		case 4: 
-			deleteDiaryEntry();
-			break; 
+			updateDiaryEntry();
+			break;
 	}
 }
 
@@ -152,7 +154,6 @@ int readInt(FILE *input, char *prompt) {
 	char *ptr;
 	char str[BUFFER_SIZE];
 	int num;
-
 	while (fgets(str, sizeof(char*), input)) {
 		num = strtol(str, &ptr, 10); 
 		if (ptr == str || *ptr != '\n')
@@ -163,15 +164,15 @@ int readInt(FILE *input, char *prompt) {
 	return num; 
 }
 
-char *removeSpaces(char *str) {
-	char *dest = str;
-	while (*str != 0) {
-		if (*str != ' ') {
-			*dest = *str;
-			dest += 1; 
-		}
-		str += 1;
-	}
-	*dest = 0;
-	return dest; 
-}
+//char *removeSpaces(char *str) {
+//	char *dest = str;
+//	while (*str != 0) {
+//		if (*str != ' ') {
+//			*dest = *str;
+//			dest += 1; 
+//		}
+//		str += 1;
+//	}
+//	*dest = 0;
+//	return dest; 
+//}

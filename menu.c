@@ -12,8 +12,8 @@ void printMainMenu() {
 	printMenuHeader();
 	printf("1 - List Your Summary\n");
 	printf("2 - Add Meal\n");
-	printf("3 - Update Meal\n");
-	printf("4 - Delete Meal\n");
+	printf("3 - Delete Meal\n");
+	printf("4 - Update Meal\n");
 	printf("5 - Exit\n\n");
 }
 

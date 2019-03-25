@@ -36,6 +36,9 @@ int main() {
 	}
 	free(username); 
 	free(filename); 
-	//free(diary); 
+	//free(diary);
+	free(userInput);
+	free(root); 
+	free(pnode); 
 	return 0; 
 }

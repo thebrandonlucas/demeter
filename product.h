@@ -31,6 +31,7 @@ typedef struct pnode {
 } ProductNode;
 
 extern Productptr root; 
+extern Productptr pnode;
 
 // Serves as double-inclusion guard
 // A function for finding the max element in a tree

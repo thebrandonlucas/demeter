@@ -11,6 +11,7 @@
 */
 
 Productptr root = NULL; 
+Productptr pnode = NULL; 
 
 int max(int a, int b) {
 	return (a > b) ? a : b; 
@@ -190,9 +191,9 @@ Productptr treeDelete(Productptr pnode, int key) {
 }
 
 // TODO: should I change NBD_number to "key" for consistency?
-Productptr treeUpdate(Productptr root, Productptr newData, int key) {
-
-}
+//Productptr treeUpdate(Productptr root, Productptr newData, int key) {
+//
+//}
 
 Productptr rightRotate(Productptr y) {
 	Productptr x = y->left; 

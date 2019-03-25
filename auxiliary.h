@@ -17,7 +17,7 @@ Productptr loadProductData(char* filename, Productptr root);
 void createNewUserDiary();
 
 // Choose a menu option and perform the appropriate action
-int chooseMainMenuOption(); 
+void chooseMainMenuOption(); 
 
 // Login functionality for returning users
 void login(); 
@@ -35,5 +35,5 @@ void uppercase(char *str);
 int readInt(FILE *input, char *prompt);
 
 // Remove spaces from a string for string comparison
-char *removeSpaces(char *str); 
+//char *removeSpaces(char *str); 
 #endif
