@@ -17,13 +17,15 @@ void loadDiary(FILE *diaryFile) {
 	char *token = (char*)malloc(sizeof(char));
 	diary->numEntries = 0;
 	rewind(diaryFile); 
-	fgets(buffer, 2, diaryFile);
+	fgets(buffer, 5, diaryFile);
 	diary->numEntries = atoi(buffer);
 	diary->entries = malloc(diary->numEntries * sizeof(Productptr)); 
 	for (int i = 0; i < diary->numEntries; i++) {
 		diary[i].time = (char*)malloc(sizeof(char)); 
 		diary[i].entries = (Productptr)malloc(sizeof(Productptr));
-		fgets(buffer, BUFFER_SIZE, diaryFile); 
+		fgets(buffer, BUFFER_SIZE, diaryFile);
+		// remove newline
+		//token = strtok(buffer, "\n"); 
 		token = strtok(buffer, "~"); 
 		diary[i].time = token; 
 		// this will be the food item name
@@ -55,7 +57,7 @@ void addDiaryEntry() {
 	time(&now); 
 	diary->numEntries += 1; 
 	//for (int i = 0; i < diary->numEntries; i++) {
-		diary[diary->numEntries-1].time = ctime(&now);
+		diary[diary->numEntries-1].time = strtok(ctime(&now), "\n");
 		diary[diary->numEntries - 1].entries = pnode;
 	//}
 	writeDiary(); 
@@ -64,10 +66,18 @@ void addDiaryEntry() {
 void writeDiary() {
 	rewind(diaryFile); 
 	fprintf(diaryFile, "%c\n", diary->numEntries + '0'); 
+	char *temp = (char*)malloc(sizeof(char)); 
 	for (int i = 0; i < diary->numEntries; i++) {
-		fprintf(diaryFile, "%s~", diary[i].time); 
-		fprintf(diaryFile, "%s", diary[i].entries->long_name); 
+		//fprintf(diaryFile, "%s~", diary[i].time); 
+		//fprintf(diaryFile, "%s", diary[i].entries->long_name); 
+		//printf("%d\n", i); 
+		strncpy(temp, diary[i].time, BUFFER_SIZE);
+		strncat(temp, "~", BUFFER_SIZE);
+		strncat(temp, diary[i].entries->long_name, BUFFER_SIZE);
+		printf("%s", diary[i].time); 
+		printf("%s", temp); 
+		fprintf(diaryFile, "%s", temp); 
 	}
-	fclose(diaryFile); 
+	//fclose(diaryFile); 
 }
 

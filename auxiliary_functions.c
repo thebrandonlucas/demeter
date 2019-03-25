@@ -66,7 +66,8 @@ void createNewUserDiary() {
 	system("clear"); 
 	diaryFile = fopen(filename, "w+");
 	// number of entries for new file is 0
-	fputs("0", diaryFile); 
+	fputs("0\n", diaryFile);
+	//diary->numEntries = 0; 
 	loadDiary(diaryFile); 
 	printf("Success! Created new diary for %s\n", username);
 	printf("Press any key to continue: "); 
@@ -96,7 +97,7 @@ void login() {
 			getchar(); getchar();
 		}
 	}
-	diaryFile = fopen(filename, "a+");
+	diaryFile = fopen(filename, "w+");
 	// number of entries for new file is 0
 	//fputs("0", diaryFile);
 	loadDiary(diaryFile);
