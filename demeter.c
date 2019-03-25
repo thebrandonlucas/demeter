@@ -34,8 +34,8 @@ int main() {
 		case 3: 
 			exit(0); 
 	}
-	//free(username); 
-	//free(filename); 
-	//fclose(diary); 
+	free(username); 
+	free(filename); 
+	//free(diary); 
 	return 0; 
 }

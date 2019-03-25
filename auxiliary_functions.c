@@ -13,7 +13,7 @@ void printMenuHeader();
 
 void init() {
 	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
-	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
+	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	diary = (Diaryptr)malloc(sizeof(Diaryptr));
 }
 
@@ -64,20 +64,21 @@ void createNewUserDiary() {
 		}
 	}
 	system("clear"); 
-	diaryFile = fopen(filename, "w+");
+	diaryFile = fopen(filename, "w");
 	// number of entries for new file is 0
 	fputs("0\n", diaryFile);
-	//diary->numEntries = 0; 
 	loadDiary(diaryFile); 
-	printf("Success! Created new diary for %s\n", username);
+	printf("Success! Created new diary for %s\n", username); 
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
+	fclose(diaryFile); 
 	// TODO: free username and filename at end of program
 }
 
 void login() {
 	int fileAlreadyExists = 0;
 	while (fileAlreadyExists == 0) {
+		char *token; 
 		system("clear");
 		printMenuHeader();
 		printf("Sign-in\n\n");
@@ -86,8 +87,7 @@ void login() {
 		//fgets(username, sizeof(username), stdin); 
 		strcpy(filename, username);
 		strcat(filename, ".log");
-
-		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+		//// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
 		strcpy(filename, username);
 		strcat(filename, ".log");
 		fileAlreadyExists = fileExists(filename);
@@ -97,19 +97,18 @@ void login() {
 			getchar(); getchar();
 		}
 	}
-	diaryFile = fopen(filename, "w+");
-	// number of entries for new file is 0
-	//fputs("0", diaryFile);
+
+	diaryFile = fopen(filename, "r");
 	loadDiary(diaryFile);
+	//fclose(diaryFile);
+
+	//if (diaryFile != NULL) {
+	//}
 }
 
 int chooseMainMenuOption() {
 	int option; 
-	//printf("Choose an option: "); 
-	//getchar(); 
-	//sscanf(stdin, "%d", &option); 
 	option = readInt(stdin, "Choose an option: "); 
-	
 	switch (option) {
 		case 1:
 			listAllEntries(); 
@@ -136,6 +135,7 @@ int fileExists(char *filename) {
 	FILE *file = fopen(filename, "r"); 
 	if (file == NULL)
 		return 0; 
+	fclose(file); 
 	return 1; 
 }
 
@@ -150,8 +150,8 @@ void uppercase(char *str) {
 
 // Borrowed from https://stackoverflow.com/questions/26583717/how-to-scanf-only-integer
 int readInt(FILE *input, char *prompt) {
-	char *ptr = (char*)malloc(sizeof(char));
-	char *str = (char*)malloc(sizeof(char));
+	char *ptr;
+	char str[BUFFER_SIZE];
 	int num;
 
 	while (fgets(str, sizeof(char*), input)) {
@@ -175,6 +175,4 @@ char *removeSpaces(char *str) {
 	}
 	*dest = 0;
 	return dest; 
-	//printf("%s", dest); 
-	//*str = *dest; 
 }
