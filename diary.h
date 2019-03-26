@@ -1,6 +1,8 @@
 #ifndef DIARY_H
 #define DIARY_H
 
+#define BUFFER_SIZE 1024
+
 typedef struct diary *Diaryptr; 
 
 extern char *username;
@@ -8,6 +10,7 @@ extern char *filename;
 extern FILE *diaryFile; 
 extern Diaryptr diary; 
 extern char *userInput; 
+extern int *choice; 
 
 typedef struct diary {
 	int numEntries; 
@@ -24,9 +27,6 @@ void listAllEntries();
 // Build a longest common subsequence table for 
 // better search results
 int buildLCSTable(int n, int m, int L[n][m], char *X, char *Y); 
-
-// Get the size of the longest common subsequence
-//int buildLCSStringSize(int L[][]);
 
 // Print diary search results for delete and update
 void printDiarySearchResults(char *key);

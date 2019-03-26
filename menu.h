@@ -24,5 +24,12 @@ void printLoadingMenu();
 void printMenuHeader();
 
 // Error message for bad user input 
-void printChoiceSelectErrorMessage(); 
+void printMenuOptionError();
+
+// Helper function for reading and validating 
+// user input
+void readMenuInput(int *choice); 
+
+// Gives user option to repeat action
+void printRepeatOption(char *option); 
 #endif

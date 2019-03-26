@@ -16,6 +16,7 @@ void init() {
 	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	diary = (Diaryptr)malloc(sizeof(Diaryptr));
 	userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
+	choice = malloc(sizeof(int)); 
 }
 
 Productptr loadProductData(char* filename, Productptr root) {
@@ -41,6 +42,7 @@ Productptr loadProductData(char* filename, Productptr root) {
 		tempnode->household_serving_size_units = token != NULL ? mallocopy(tempnode->household_serving_size_units, token, n) : "None";
 		root = treeInsert(root, tempnode);
 	}
+	//free(tempnode); 
 	return root;
 }
 
@@ -69,7 +71,7 @@ void createNewUserDiary() {
 	// number of entries for new file is 0
 	fputs("0\n", diaryFile);
 	loadDiary(diaryFile); 
-	printf("Success! Created new diary for %s\n", username); 
+	printf("Success! Created new diary for %s\n\n", username); 
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
 	fclose(diaryFile); 
@@ -79,13 +81,16 @@ void createNewUserDiary() {
 void login() {
 	int fileAlreadyExists = 0;
 	while (fileAlreadyExists == 0) {
-		//char *token; 
+		//char str[BUFFER_SIZE]; 
 		system("clear");
 		printMenuHeader();
 		printf("Sign-in\n\n");
 		printf("Enter username: ");
-		scanf("%s", username);
-		//fgets(username, sizeof(username), stdin); 
+		//scanf("%s", username);
+		readString(username, stdin); 
+		//fgets(username, BUFFER_SIZE, stdin);
+		//getchar(); getchar()
+		sscanf(username, "%s", username); 
 		strcpy(filename, username);
 		strcat(filename, ".log");
 		//// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
@@ -95,22 +100,22 @@ void login() {
 		if (fileAlreadyExists == 0) {
 			system("clear");
 			printf("Error! User %s does not exist. Please try again or enter new username.", filename);
-			getchar(); getchar();
+			/*getchar(); getchar();*/
 		}
 	}
 
 	diaryFile = fopen(filename, "r");
 	loadDiary(diaryFile);
-	//fclose(diaryFile);
+	fclose(diaryFile);
 
 	//if (diaryFile != NULL) {
 	//}
 }
 
 void chooseMainMenuOption() {
-	int option; 
-	option = readInt(stdin, "Choose an option: "); 
-	switch (option) {
+	printf("Choose an option: "); 
+	readMenuInput(choice); 
+	switch (*choice) {
 		case 1:
 			listAllEntries(); 
 			break; 
@@ -150,18 +155,27 @@ void uppercase(char *str) {
 }
 
 // Borrowed from https://stackoverflow.com/questions/26583717/how-to-scanf-only-integer
-int readInt(FILE *input, char *prompt) {
+int readInt(FILE *input) {
+	char str[BUFFER_SIZE]; 
 	char *ptr;
-	char str[BUFFER_SIZE];
-	int num;
-	while (fgets(str, sizeof(char*), input)) {
-		num = strtol(str, &ptr, 10); 
-		if (ptr == str || *ptr != '\n')
-			printf("%s", prompt);
-		else
-			break; 
-	}
+	//char str[BUFFER_SIZE] = "";
+	int num = 0;
+	//while (fgets(str, sizeof(char*), input)) {
+	//while (num == 0) {
+	readString(str, input); 
+	//printf("%s", userInput); 
+	num = strtol(str, &ptr, 10); 
+	//}
+	//free(userInput); 
 	return num; 
+}
+
+void readString(char str[], FILE *input) {
+	//char str[BUFFER_SIZE]; 
+	while (fgets(str, BUFFER_SIZE, input) == NULL) {
+		printMenuHeader(); 
+		printf("Error. Please enter no more than 1024 characters."); 
+	}
 }
 
 //char *removeSpaces(char *str) {

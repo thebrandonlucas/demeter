@@ -10,17 +10,12 @@ int main() {
 	system("clear"); 
 	init(); 
 	char *productFile = "food_database.csv";
-	//Productptr root = NULL; 
-	//printLoadingMenu();
+	printLoadingMenu();
+	fflush(stdout); 
 	root = loadProductData(productFile, root); 
-	//Productptr pnode = root->left; 
-	//printf("%d %d", root->NBD_Number, pnode->parent->NBD_Number); 
-	printLoginMenu(); 
-	int choice; 
-	choice = readInt(stdin, ""); 
-	if (choice == 0)
-		printChoiceSelectErrorMessage(); 
-	switch(choice) {
+	printLoginMenu();
+	readMenuInput(choice); 
+	switch(*choice) {
 		case 1: 
 			login();
 			printMainMenu(); 
@@ -34,11 +29,13 @@ int main() {
 		case 3: 
 			exit(0); 
 	}
+	writeDiary(); 
 	free(username); 
 	free(filename); 
-	//free(diary);
+	free(diary);
 	free(userInput);
 	free(root); 
 	free(pnode); 
+	free(choice); 
 	return 0; 
 }

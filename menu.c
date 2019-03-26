@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
+#include "product.h"
+#include "diary.h"
+#include "auxiliary.h"
 
 void printMainMenu(); 
 void printLoginMenu(); 
@@ -39,11 +42,32 @@ void printLoadingMenu() {
 }
 
 void printMenuHeader() {
-	printf("* * * Demeter Nutrition Tracker -- Main Menu * * *\n\n");
+	printf("* * * Demeter Nutrition Tracker * * *\n\n");
 }
 
-void printChoiceSelectErrorMessage() {
-		printf("Please enter an integer corresponding to the correct\n");
-		printf("choice. Error...Exiting\n");
-		exit(0);
+void printMenuOptionError() {
+	system("clear"); 
+		printf("Error. Please enter an integer corresponding\n");
+		printf("to the correct choice.\n");
+		printf("\nPress ENTER to continue"); 
+		//exit(0);
+}
+
+void readMenuInput(int *choice) {
+	char *ptr;
+	char str[BUFFER_SIZE];
+	//*choice = 0; 
+	//printf("asdf"); 
+	while (fgets(str, sizeof(char*), stdin)) {
+		*choice = strtol(str, &ptr, 10);
+		if (*choice == 0)
+			printMenuOptionError();
+		else
+			break; 
+	}
+}
+
+void printRepeatOption(char *option) {
+	system("clear"); 
+	printf("Would you like to %s another item? (y/n): ", option); 
 }

@@ -1,6 +1,7 @@
 #ifndef AUX_H
 #define AUX_H
 #include "product.h"
+#include "diary.h"
 /*
 	This file contains defs for functions that
 	help the main program load data and print menus
@@ -32,7 +33,10 @@ int fileExists(char *filename);
 void uppercase(char *str); 
 
 // Read and parse integers from stdin
-int readInt(FILE *input, char *prompt);
+int readInt(FILE *input);
+
+// Read a string and check for buffer size errors
+void readString(char str[], FILE *input);
 
 // Remove spaces from a string for string comparison
 //char *removeSpaces(char *str); 
