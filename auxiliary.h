@@ -40,4 +40,7 @@ void readString(char str[], FILE *input);
 
 // Remove spaces from a string for string comparison
 //char *removeSpaces(char *str); 
+
+// Save results and deallocate
+void cleanup(); 
 #endif

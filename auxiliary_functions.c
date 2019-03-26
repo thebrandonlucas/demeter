@@ -9,7 +9,7 @@
 
 char *mallocopy(char* a, char* b, size_t n); 
 int fileExists(char *filename); 
-void printMenuHeader(); 
+void printMenuHeader(char *heaader); 
 
 void init() {
 	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
@@ -50,7 +50,7 @@ void createNewUserDiary() {
 	int fileAlreadyExists = 1; 
 	while (fileAlreadyExists == 1) {
 		system("clear");
-		printMenuHeader(); 
+		printMenuHeader("CREATE NEW USER"); 
 		printf("Welcome!\n\n"); 
 		printf("Please create a username and password\n\n");
 		printf("Username: ");
@@ -71,6 +71,7 @@ void createNewUserDiary() {
 	// number of entries for new file is 0
 	fputs("0\n", diaryFile);
 	loadDiary(diaryFile); 
+	printMenuHeader("CREATE NEW USER"); 
 	printf("Success! Created new diary for %s\n\n", username); 
 	printf("Press any key to continue: "); 
 	getchar(); getchar(); 
@@ -83,7 +84,7 @@ void login() {
 	while (fileAlreadyExists == 0) {
 		//char str[BUFFER_SIZE]; 
 		system("clear");
-		printMenuHeader();
+		printMenuHeader("LOGIN");
 		printf("Sign-in\n\n");
 		printf("Enter username: ");
 		//scanf("%s", username);
@@ -113,21 +114,28 @@ void login() {
 }
 
 void chooseMainMenuOption() {
-	printf("Choose an option: "); 
-	readMenuInput(choice); 
-	switch (*choice) {
-		case 1:
-			listAllEntries(); 
-			break; 
-		case 2: 
-			addDiaryEntry();
-			break; 
-		case 3: 
-			deleteDiaryEntry(); 
-			break; 
-		case 4: 
-			updateDiaryEntry();
-			break;
+	while (1) {
+		printMainMenu();
+		printf("Choose an option: ");
+		readMenuInput(choice);
+		switch (*choice) {
+			case 1:
+				listAllEntries();
+				break;
+			case 2:
+				addDiaryEntry();
+				break;
+			case 3:
+				deleteDiaryEntry();
+				break;
+			case 4:
+				updateDiaryEntry();
+				break;
+			case 5:
+				return;
+			default:
+				printf("Please enter an integer from above.");
+		}
 	}
 }
 
@@ -154,28 +162,24 @@ void uppercase(char *str) {
 	}
 }
 
-// Borrowed from https://stackoverflow.com/questions/26583717/how-to-scanf-only-integer
 int readInt(FILE *input) {
 	char str[BUFFER_SIZE]; 
 	char *ptr;
-	//char str[BUFFER_SIZE] = "";
 	int num = 0;
-	//while (fgets(str, sizeof(char*), input)) {
-	//while (num == 0) {
 	readString(str, input); 
-	//printf("%s", userInput); 
 	num = strtol(str, &ptr, 10); 
-	//}
-	//free(userInput); 
 	return num; 
 }
 
 void readString(char str[], FILE *input) {
-	//char str[BUFFER_SIZE]; 
 	while (fgets(str, BUFFER_SIZE, input) == NULL) {
-		printMenuHeader(); 
+		printMenuHeader("ERROR"); 
 		printf("Error. Please enter no more than 1024 characters."); 
 	}
+//	if (str[0] == 'm' || str[0] == 'M') {
+//		printMainMenu(); 
+//		chooseMainMenuOption(); 
+//	} else if (str[0] == 'e' || str[0])
 }
 
 //char *removeSpaces(char *str) {
@@ -190,3 +194,14 @@ void readString(char str[], FILE *input) {
 //	*dest = 0;
 //	return dest; 
 //}
+
+void cleanup() {
+	writeDiary();
+	free(username);
+	free(filename);
+	free(diary);
+	free(userInput);
+	free(root);
+	free(pnode);
+	free(choice);
+}

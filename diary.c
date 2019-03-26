@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include "menu.h"
 #include "product.h"
 #include "auxiliary.h"
@@ -47,7 +48,32 @@ void loadDiary(FILE *diaryFile) {
 }
 
 void listAllEntries() {
-
+	system("clear"); 
+	char str[BUFFER_SIZE] = ""; 
+	strncat(str, username, BUFFER_SIZE);
+	strncat(str, "'S SUMMARY", BUFFER_SIZE);
+	printMenuHeader(str); 
+	printf("\t\tFood Entries\n\n"); 
+	for (int i = diary->numEntries - 1; i >= 0; i--) {
+		pnode = treeSearch(root, diary[i].entries->long_name);
+		printStars();
+		printf("Entry Date: %s\n", diary[i].time);
+		printf("Entry Name: %s\n", diary[i].entries->long_name);
+		printf("Manufacturer: %s\n", diary[i].entries->manufacturer);
+		printf("\n~~~ Nutrition Info ~~~\n\n");
+		printf("Calories: %f\n", diary[i].entries->energy);
+		printf("Carbs: %f\n", diary[i].entries->carbs);
+		printf("Protein: %f\n", diary[i].entries->protein);
+		printf("Fat: %f\n\n", diary[i].entries->fat);
+		printStars();
+		if (i % 2 == 0) {
+			readString(str, stdin);
+			if (str[0] == '\n')
+				continue;
+			else if (str[0] == 'm')
+				return; 
+		}
+	}
 }
 
 int buildLCSTable(int n, int m, int L[n][m], char *X, char *Y) {
@@ -76,7 +102,7 @@ void printDiarySearchResults(char *key) {
 char *searchDiary() {
 	char *userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	system("clear");
-	printMenuHeader();
+	printMenuHeader("");
 	printf("Search Diary: ");
 	fgets(userInput, BUFFER_SIZE, stdin);
 	uppercase(userInput);
@@ -88,12 +114,12 @@ char *searchDiary() {
 }
 
 void addDiaryEntry() {
-	*choice = 1; 
-	while (*choice == 1) {
+	while (1) {
 		char str[BUFFER_SIZE] = "";
+		int foodItem = 0; 
 		//int choice = 0; 
 		system("clear");
-		printMenuHeader();
+		printMenuHeader("ADD");
 		printf("Search foods: ");
 		readString(str, stdin); 
 		uppercase(str);
@@ -101,64 +127,92 @@ void addDiaryEntry() {
 		pnode = treeSearch(root, str);
 		printSearchResults(pnode);
 		printf("Select Item: ");
+		printf("\n\nPress '0' to go back to Main Menu."); 
 		// TODO: make choice part of option
 		//choice = readInt(stdin, ""); 
-		readInt(stdin); 
+		foodItem = readInt(stdin); 
 		time_t now;
 		time(&now);
+		printConfirmation("ADD", ctime(&now), pnode->long_name); 
+		readString(str, stdin); 
+		if (str[0] == 'n' || str[0] == 'N')
+			break; 
 		diary->numEntries += 1;
 		diary[diary->numEntries - 1].time = strtok(ctime(&now), "\n");
 		diary[diary->numEntries - 1].entries = pnode;
-		//free(userInput);
-		//free(pnode);
-		printRepeatOption("add"); 
-		//str = ""; 
-		fgets(str, BUFFER_SIZE, stdin); 
-		//printf("HELLO%s", str); 
+		printRepeatOption("add");
+		readString(str, stdin);
 		if (str[0] == 'n' || str[0] == 'N')
-			*choice = 0; 
-		//getchar(); getchar(); 
+			break; 
 	}
 }
 
 void deleteDiaryEntry() {
-	char *key = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
-	char *temp = (char*)malloc(sizeof(char)*BUFFER_SIZE);
-	int highestMatchIndex, highestMatchCount = 0; 
-	key = searchDiary();
-	for (int i = 0; i < diary->numEntries; i++) {
-		int n = strlen(key); 
-		int m = strlen(diary[i].entries->long_name); 
-		int L[n + 1][m + 1]; 
-		int tempMatchCount = buildLCSTable(n, m, L, key, diary[i].entries->long_name);
-		if (tempMatchCount > highestMatchCount) {
-			highestMatchCount = tempMatchCount;
-			highestMatchIndex = i; 
+	while (1) {
+		char *key = (char*)malloc(sizeof(char)*BUFFER_SIZE);
+		//char *temp = (char*)malloc(sizeof(char)*BUFFER_SIZE);
+		//char key[BUFFER_SIZE] = ""; 
+		//char temp[BUFFER_SIZE] = ""; 
+		char str[BUFFER_SIZE] = ""; 
+		int highestMatchIndex, highestMatchCount = 0;
+		key = searchDiary();
+		system("clear"); 
+		printMenuHeader("DELETE"); 
+		for (int i = 0; i < diary->numEntries; i++) {
+			int n = strlen(key);
+			int m = strlen(diary[i].entries->long_name);
+			int L[n + 1][m + 1];
+			int tempMatchCount = buildLCSTable(n, m, L, key, diary[i].entries->long_name);
+			if (tempMatchCount > highestMatchCount) {
+				highestMatchCount = tempMatchCount;
+				highestMatchIndex = i;
+			}
 		}
+		printConfirmation("DELETE", diary[highestMatchIndex].time, diary[highestMatchIndex].entries->long_name);
+		readString(str, stdin); 
+		if (str[0] == 'y' || str[0] == 'Y') {
+			// delete matching entry
+			for (int i = highestMatchIndex; i < diary->numEntries - 1; i++) {
+				diary[i].time = diary[i + 1].time;
+				diary[i].entries = diary[i + 1].entries;
+			}
+			if (diary->numEntries > 0)
+				diary->numEntries--;
+			printRepeatOption("delete");
+			readString(str, stdin);
+			//fgets(str, BUFFER_SIZE, stdin);
+		}
+		free(key);
+		break; 
 	}
-	// delete matching entry
-	for (int i = highestMatchIndex; i < diary->numEntries - 1; i++) {
-		diary[i].time = diary[i + 1].time; 
-		diary[i].entries = diary[i + 1].entries; 
-	}
-	diary->numEntries--; 
-	//writeDiary();
-	free(key);
-	free(temp); 
 }
 
 void updateDiaryEntry() {
-	char *key = (char*)malloc(sizeof(char)*BUFFER_SIZE);
-	addDiaryEntry(); 
-	deleteDiaryEntry(); 
-	//writeDiary();
-	free(key); 
+	*choice = 1; 
+	char str[BUFFER_SIZE] = ""; 
+	while (*choice == 1) {
+		//char key[BUFFER_SIZE];
+		system("clear"); 
+		printMenuHeader("UPDATE"); 
+		deleteDiaryEntry();
+		addDiaryEntry();
+		//fgets(str, BUFFER_SIZE, stdin);
+		printRepeatOption("UPDATE"); 
+		readString(str, stdin);
+		if (str[0] == 'n' || str[0] == 'N')
+			*choice = 0;
+		//free(key);
+	}
+	printMainMenu(); 
+	chooseMainMenuOption(); 
 }
 
 void writeDiary() {
+	char str[BUFFER_SIZE] = "";
 	diaryFile = fopen(filename, "w"); 
-	fprintf(diaryFile, "%c\n", diary->numEntries + '0'); 
-	char str[BUFFER_SIZE] = ""; 
+	sprintf(str, "%d", diary->numEntries); 
+	fprintf(diaryFile, "%s\n", str); 
+	str[BUFFER_SIZE] = '\0';
 	for (int i = 0; i < diary->numEntries; i++) {
 		strncpy(str, diary[i].time, BUFFER_SIZE);
 		strncat(str, "~", BUFFER_SIZE);

@@ -13,29 +13,25 @@ int main() {
 	printLoadingMenu();
 	fflush(stdout); 
 	root = loadProductData(productFile, root); 
-	printLoginMenu();
-	readMenuInput(choice); 
-	switch(*choice) {
-		case 1: 
-			login();
-			printMainMenu(); 
-			chooseMainMenuOption(); 
-			break; 
-		case 2: 
-			createNewUserDiary();
-			printMainMenu(); 
-			chooseMainMenuOption(); 
-			break; 
-		case 3: 
-			exit(0); 
+	while (1) {
+		printLoginMenu();
+		readMenuInput(choice);
+		switch (*choice) {
+			case 1:
+				login();
+				chooseMainMenuOption();
+				break;
+			case 2:
+				createNewUserDiary();
+				chooseMainMenuOption();
+				break;
+			case 3:
+				exit(0);
+				break; 
+			default: 
+				printf("Please enter one of the integer options above"); 
+		}
 	}
-	writeDiary(); 
-	free(username); 
-	free(filename); 
-	free(diary);
-	free(userInput);
-	free(root); 
-	free(pnode); 
-	free(choice); 
+	cleanup(); 
 	return 0; 
 }

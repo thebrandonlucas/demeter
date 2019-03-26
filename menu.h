@@ -21,7 +21,7 @@ void printLoginMenu();
 void printLoadingMenu(); 
 
 // Print the Demeter header
-void printMenuHeader();
+void printMenuHeader(char *header);
 
 // Error message for bad user input 
 void printMenuOptionError();
@@ -32,4 +32,16 @@ void readMenuInput(int *choice);
 
 // Gives user option to repeat action
 void printRepeatOption(char *option); 
+
+// Confirm a delete or an update
+void printConfirmation(char *option, char* time, char *name);
+
+// Menu options to navigate the program
+void printMenuOptions(); 
+
+// Print the current username
+void printUser(); 
+
+// Prints 30 stars for aesthetics
+void printStars(); 
 #endif
