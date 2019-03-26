@@ -10,6 +10,7 @@
 char *mallocopy(char* a, char* b, size_t n); 
 int fileExists(char *filename); 
 void printMenuHeader(char *heaader); 
+void chooseMainMenuOption(); 
 
 void init() {
 	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
@@ -86,31 +87,56 @@ void login() {
 		system("clear");
 		printMenuHeader("LOGIN");
 		printf("Sign-in\n\n");
+		printf("Press '0' to return to go back.\n\n"); 
 		printf("Enter username: ");
 		//scanf("%s", username);
 		readString(username, stdin); 
-		//fgets(username, BUFFER_SIZE, stdin);
-		//getchar(); getchar()
+		if (username[0] == '0') {
+			chooseLoginMenuOption(); 
+		}
 		sscanf(username, "%s", username); 
 		strcpy(filename, username);
 		strcat(filename, ".log");
-		//// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
+		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
 		strcpy(filename, username);
 		strcat(filename, ".log");
 		fileAlreadyExists = fileExists(filename);
 		if (fileAlreadyExists == 0) {
 			system("clear");
-			printf("Error! User %s does not exist. Please try again or enter new username.", filename);
-			/*getchar(); getchar();*/
+			printMenuHeader("ERROR"); 
+			printf("Error! User '%s' does not exist. \nPlease try again or enter new username. ", filename);
+			getchar();
 		}
 	}
-
 	diaryFile = fopen(filename, "r");
 	loadDiary(diaryFile);
 	fclose(diaryFile);
+}
 
-	//if (diaryFile != NULL) {
-	//}
+void chooseLoginMenuOption() {
+	while (1) {
+		printLoginMenu();
+		readMenuInput(choice);
+		switch (*choice) {
+		case 1:
+			login();
+			chooseMainMenuOption();
+			break;
+		case 2:
+			createNewUserDiary();
+			chooseMainMenuOption();
+			break;
+		case 3:
+			exit(0);
+			break;
+		default:
+			system("clear");
+			printMenuHeader("ERROR");
+			printf("Please enter one of the integer options above\n");
+			printf("Press ENTER to continue: ");
+			getchar();
+		}
+	}
 }
 
 void chooseMainMenuOption() {
@@ -119,6 +145,8 @@ void chooseMainMenuOption() {
 		printf("Choose an option: ");
 		readMenuInput(choice);
 		switch (*choice) {
+			//case 0: 
+			//	login(); 
 			case 1:
 				listAllEntries();
 				break;
@@ -134,7 +162,10 @@ void chooseMainMenuOption() {
 			case 5:
 				return;
 			default:
-				printf("Please enter an integer from above.");
+				system("clear"); 
+				printMenuHeader("ERROR"); 
+				printf("Please enter an integer from above. ");
+				getchar(); 
 		}
 	}
 }

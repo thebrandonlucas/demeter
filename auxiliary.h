@@ -17,6 +17,9 @@ Productptr loadProductData(char* filename, Productptr root);
 // Print menu to create new user diary
 void createNewUserDiary();
 
+// Choose a login menu option and perform appropriate action 
+void chooseLoginMenuOption(); 
+
 // Choose a menu option and perform the appropriate action
 void chooseMainMenuOption(); 
 

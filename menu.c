@@ -48,9 +48,10 @@ void printMenuHeader(char *header) {
 
 void printMenuOptionError() {
 	system("clear"); 
+	printMenuHeader("ERROR"); 
 	printf("Error. Please enter an integer corresponding\n");
 	printf("to the correct choice.\n");
-	printf("\nPress ENTER to continue"); 
+	printf("\nPress ENTER to continue: "); 
 	//exit(0);
 }
 
@@ -59,13 +60,16 @@ void readMenuInput(int *choice) {
 	char str[BUFFER_SIZE];
 	//*choice = 0; 
 	//printf("asdf"); 
-	while (fgets(str, sizeof(char*), stdin)) {
-		*choice = strtol(str, &ptr, 10);
-		if (*choice == 0)
-			printMenuOptionError();
-		else
-			break; 
+	//while (fgets(str, sizeof(char*), stdin)) {
+	readString(str, stdin); 
+	*choice = strtol(str, &ptr, 10);
+	if (*choice == 0) {
+		printMenuOptionError();
+		getchar(); 
 	}
+		//else
+		//	break; 
+	//}
 }
 
 void printRepeatOption(char *option) {
