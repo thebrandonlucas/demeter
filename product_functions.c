@@ -63,11 +63,22 @@ Productptr newProductNode(Productptr tempnode) {
 }
 
 Productptr treeSearch(Productptr root, char *key) {
-	if ((root->left == NULL || root->right == NULL) || strcmp(key, root->long_name) == 0)
-		return root; 
-	if (strcmp(key, root->long_name) < 0)
+	char rootName[BUFFER_SIZE] = ""; 
+	strncpy(rootName, root->long_name, strlen(root->long_name)); 
+	stripSpace(rootName); 
+	if (strncmp(key, rootName, strlen(key)) == 0)
+		return root;
+	if (strncmp(key, rootName, strlen(rootName)) < 0) {
+		if (root->left == NULL) return root; 
 		return treeSearch(root->left, key);
+	}
+	if (root->right == NULL) return root; 
 	return treeSearch(root->right, key);
+	//if ((root->left == NULL || root->right == NULL) || strcmp(key, root->long_name) == 0)
+	//	return root; 
+	//if (strcmp(key, root->long_name) < 0)
+	//	return treeSearch(root->left, key);
+	//return treeSearch(root->right, key);
 }
 
 // TODO: Change tempnode to "data" or some better name
@@ -77,12 +88,12 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 		return newProductNode(tempnode); 
 
 	Productptr temp; 
-	if (strcmp(key, pnode->long_name) < 0) {
+	if (strncmp(key, pnode->long_name, strlen(key)) < 0) {
 		temp = treeInsert(pnode->left, tempnode);
 		pnode->left = temp; 
 		temp->parent = pnode; 
 	}
-	else if (strcmp(key, pnode->long_name) > 0) {
+	else if (strncmp(key, pnode->long_name, strlen(key)) > 0) {
 		temp = treeInsert(pnode->right, tempnode);
 		pnode->right = temp;
 		temp->parent = pnode;
@@ -98,21 +109,21 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	int balanceFactor = getBalanceFactor(pnode); 
 
 	// left left case
-	if (balanceFactor > 1 && strcmp(key, pnode->left->long_name) < 0)
+	if (balanceFactor > 1 && strncmp(key, pnode->left->long_name, strlen(key)) < 0)
 		return rightRotate(pnode); 
 
 	// right right case 
-	if (balanceFactor < -1 && strcmp(key, pnode->right->long_name) > 0)
+	if (balanceFactor < -1 && strncmp(key, pnode->right->long_name, strlen(key)) > 0)
 		return leftRotate(pnode); 
 
 	// left right case 
-	if (balanceFactor > 1 && strcmp(key, pnode->left->long_name) > 0) {
+	if (balanceFactor > 1 && strncmp(key, pnode->left->long_name, strlen(key)) > 0) {
 		pnode->left = leftRotate(pnode->left); 
 		return rightRotate(pnode); 
 	}
 
 	// right left case 
-	if (balanceFactor < -1 && strcmp(key, pnode->right->long_name) < 0) {
+	if (balanceFactor < -1 && strncmp(key, pnode->right->long_name, strlen(key)) < 0) {
 		pnode->right = rightRotate(pnode->right); 
 		return leftRotate(pnode); 
 	}
@@ -261,23 +272,6 @@ int getBalanceFactor(Productptr N) {
 	return treeHeight(N->left) - treeHeight(N->right);
 }
 
-void printSearchResults(Productptr pnode) {
-	Productptr temp = palloc();
-	temp = pnode;
-	int counter = 1; 
-	printf("\n%d - %s\n\n", counter, pnode->long_name);
-	for (int i = 0; i < 2; i++) {
-		temp = treeSuccessor(temp);
-		counter++; 
-		printf("%d - %s\n\n", counter, temp->long_name);
-	}
-	for (int i = 0; i < 2; i++) {
-		temp = treePredecessor(temp);
-		counter++; 
-		printf("%d - %s\n\n", counter, temp->long_name);
-	}
-}
-
 // A utility function to print preorder traversal 
 // of the tree. 
 // The function also prints height of every node 
@@ -286,7 +280,7 @@ void preOrder(Productptr root)
 {
 	if (root != NULL)
 	{
-		printf("%s ", root->long_name);
+		printf("%s \n", root->long_name);
 		preOrder(root->left);
 		preOrder(root->right);
 	}

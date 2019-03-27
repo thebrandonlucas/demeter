@@ -75,9 +75,6 @@ Productptr treePredecessor(Productptr pnode);
 // Balance factor of node N
 int getBalanceFactor(Productptr N); 
 
-// Print the results of the closest search results
-void printSearchResults(Productptr pnode); 
-
 // TODO: DELETE
 void preOrder(Productptr root); 
 #endif

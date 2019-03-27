@@ -14,6 +14,7 @@ void chooseMainMenuOption();
 
 void init() {
 	username = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
+	*username = '\0'; 
 	filename = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	diary = (Diaryptr)malloc(sizeof(Diaryptr));
 	userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
@@ -47,6 +48,19 @@ Productptr loadProductData(char* filename, Productptr root) {
 	return root;
 }
 
+void loadSearchResults(char searchResults[5][BUFFER_SIZE], Productptr pnode) {
+	int i = 0; 
+	strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+	for (i = 1; i < 3; i++) {
+		pnode = treeSuccessor(pnode);
+		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+	}
+	for (int i = 3; i < 5; i++) {
+		pnode = treePredecessor(pnode);
+		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+	}
+}
+
 void createNewUserDiary() {
 	int fileAlreadyExists = 1; 
 	while (fileAlreadyExists == 1) {
@@ -54,17 +68,24 @@ void createNewUserDiary() {
 		printMenuHeader("CREATE NEW USER"); 
 		printf("Welcome!\n\n"); 
 		printf("Please create a username and password\n\n");
+		printf("Press '0' to go back.\n\n");
 		printf("Username: ");
-		scanf("%s", username); 
-
+		//scanf("%s", username); 
+		readString(username, stdin);
+		if (username[0] == '0') {
+			chooseLoginMenuOption();
+		}
+		sscanf(username, "%s", username);
 		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
-		strcpy(filename, username); 
-		strcat(filename, ".log");
+		strncpy(filename, username, 200); 
+		strncat(filename, ".log", 250);
+		//strcpy(filename, username); 
+		//strcat(filename, ".log"); 
 		fileAlreadyExists = fileExists(filename); 
 		if (fileAlreadyExists == 1) {
 			system("clear"); 
-			printf("Error! File %s already exists. Please choose another name.", filename);
-			getchar(); getchar(); 
+			printf("Error! File '%s' already exists. \nPlease choose another name.", filename);
+			getchar(); 
 		}
 	}
 	system("clear"); 
@@ -75,7 +96,7 @@ void createNewUserDiary() {
 	printMenuHeader("CREATE NEW USER"); 
 	printf("Success! Created new diary for %s\n\n", username); 
 	printf("Press any key to continue: "); 
-	getchar(); getchar(); 
+	getchar(); /*getchar(); */
 	fclose(diaryFile); 
 	// TODO: free username and filename at end of program
 }
@@ -87,7 +108,7 @@ void login() {
 		system("clear");
 		printMenuHeader("LOGIN");
 		printf("Sign-in\n\n");
-		printf("Press '0' to return to go back.\n\n"); 
+		printf("Press '0' to go back.\n\n"); 
 		printf("Enter username: ");
 		//scanf("%s", username);
 		readString(username, stdin); 
@@ -127,12 +148,17 @@ void chooseLoginMenuOption() {
 			chooseMainMenuOption();
 			break;
 		case 3:
+			cleanup();
+			system("clear");
+			if (username != NULL)
+				printf("Happy Healthy Eating, %s!\n", username);
+			else
+				printf("Happy Healthy Eating!\n");
 			exit(0);
-			break;
 		default:
 			system("clear");
 			printMenuHeader("ERROR");
-			printf("Please enter one of the integer options above\n");
+			printf("Make sure you're entering an integer!\n");
 			printf("Press ENTER to continue: ");
 			getchar();
 		}
@@ -160,11 +186,18 @@ void chooseMainMenuOption() {
 				updateDiaryEntry();
 				break;
 			case 5:
-				return;
+				cleanup(); 
+				system("clear"); 
+				if (*username != '\0')
+					printf("Happy Healthy Eating, %s!\n", username);
+				else
+					printf("Happy Healthy Eating!\n"); 
+				exit(0); 
 			default:
 				system("clear"); 
 				printMenuHeader("ERROR"); 
-				printf("Please enter an integer from above. ");
+				printf("Make sure you're entering an INTEGER!\n");
+				printf("Press any key to continue: "); 
 				getchar(); 
 		}
 	}
@@ -225,6 +258,11 @@ void readString(char str[], FILE *input) {
 //	*dest = 0;
 //	return dest; 
 //}
+
+//https://stackoverflow.com/questions/7775138/strip-whitespace-from-a-string-in-place
+void stripSpace(char *str) {
+	for (size_t i = 0, j = 0; (str[j] = str[i]); j += !isspace(str[i++]));
+}
 
 void cleanup() {
 	writeDiary();

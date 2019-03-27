@@ -1,5 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 1024
+#endif
 /*
 	This file contains definitions for all of 
 	the program's menu printing functions. 
@@ -35,6 +38,9 @@ void printRepeatOption(char *option);
 
 // Confirm a delete or an update
 void printConfirmation(char *option, char* time, char *name);
+
+// Print the results of the closest search results
+void printSearchResults(char searchResults[5][BUFFER_SIZE]); 
 
 // Menu options to navigate the program
 void printMenuOptions(); 

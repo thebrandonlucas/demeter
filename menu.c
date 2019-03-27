@@ -52,7 +52,6 @@ void printMenuOptionError() {
 	printf("Error. Please enter an integer corresponding\n");
 	printf("to the correct choice.\n");
 	printf("\nPress ENTER to continue: "); 
-	//exit(0);
 }
 
 void readMenuInput(int *choice) {
@@ -85,6 +84,14 @@ void printConfirmation(char *option, char* time, char *name) {
 	printMenuHeader(option); 
 	printf("\tEntry Date: %s\n\tItem: %s\n\n", time, name); 
 	printf("Are you sure you want to %s this item? (y/n): ", option); 
+}
+
+void printSearchResults(char searchResults[5][BUFFER_SIZE]) {
+	printf("_____________________________\n"); 
+	printf("\n");
+	for (int i = 0; i < 5; i++)
+		printf("%d - %s\n\n", i + 1, searchResults[i]);
+	printf("_____________________________\n\n");
 }
 
 //void printMenuOptionHelper() {

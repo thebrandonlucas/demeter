@@ -14,6 +14,10 @@ void init();
 // starting at root
 Productptr loadProductData(char* filename, Productptr root); 
 
+// Returns top 5 search results in array for user to 
+// choose from
+void loadSearchResults(char searchResults[5][BUFFER_SIZE], Productptr pnode);
+
 // Print menu to create new user diary
 void createNewUserDiary();
 
@@ -43,6 +47,9 @@ void readString(char str[], FILE *input);
 
 // Remove spaces from a string for string comparison
 //char *removeSpaces(char *str); 
+
+// Remove spaces from a string
+void stripSpace(char *str);
 
 // Save results and deallocate
 void cleanup(); 

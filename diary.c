@@ -16,8 +16,8 @@ char *userInput;
 int *choice; 
 
 void loadDiary(FILE *diaryFile) {
-	char *buffer = (char*)malloc(sizeof(char)*BUFFER_SIZE);
-	char *token = (char*)malloc(sizeof(char)*BUFFER_SIZE);
+	char buffer[BUFFER_SIZE] = ""; 
+	char *token = (char*)malloc(sizeof(char)*BUFFER_SIZE); 
 	diary->numEntries = 0;
 	rewind(diaryFile); 
 	fgets(buffer, 5, diaryFile);
@@ -44,7 +44,7 @@ void loadDiary(FILE *diaryFile) {
 		diary[i].entries = pnode; 
 	}
 	//free(buffer); 
-	//free(token); 
+	free(token); 
 }
 
 void listAllEntries() {
@@ -53,6 +53,11 @@ void listAllEntries() {
 	strncat(str, username, BUFFER_SIZE);
 	strncat(str, "'S SUMMARY", BUFFER_SIZE);
 	printMenuHeader(str); 
+	if (diary->numEntries <= 0) {
+		printf("You have no entries.\nGo back and click 'ADD' to start!"); 
+		printf("Press ENTER to continue: "); 
+		return; 
+	}
 	printf("\t\tFood Entries\n\n"); 
 	for (int i = diary->numEntries - 1; i >= 0; i--) {
 		pnode = treeSearch(root, diary[i].entries->long_name);
@@ -106,43 +111,51 @@ char *searchDiary() {
 	printf("Search Diary: ");
 	fgets(userInput, BUFFER_SIZE, stdin);
 	uppercase(userInput);
-	//Productptr pnode = palloc();
-	//pnode = treeSearch(root, userInput);
-	//char *temp = pnode->long_name; 
-	//free(pnode); 
 	return userInput; 
 }
 
 void addDiaryEntry() {
 	while (1) {
-		char str[BUFFER_SIZE] = "";
+		char userSearch[BUFFER_SIZE] = "";
+		char userInput[BUFFER_SIZE] = ""; 
+		char searchResults[5][BUFFER_SIZE] = { "" };
 		int foodItem = 0; 
-		//int choice = 0; 
 		system("clear");
 		printMenuHeader("ADD");
 		printf("Search foods: ");
-		readString(str, stdin); 
-		uppercase(str);
+		readString(userSearch, stdin);
+		uppercase(userSearch);
 		Productptr pnode = palloc();
-		pnode = treeSearch(root, str);
-		printSearchResults(pnode);
+		stripSpace(userSearch);
+		pnode = treeSearch(root, userSearch);
+		loadSearchResults(searchResults, pnode); 
+		printSearchResults(searchResults);
+		printf("\nPress '0' to go back to Main Menu.\n\n");
 		printf("Select Item: ");
-		printf("\n\nPress '0' to go back to Main Menu."); 
-		// TODO: make choice part of option
-		//choice = readInt(stdin, ""); 
-		foodItem = readInt(stdin); 
+		readString(userInput, stdin); 
+		if (userInput[0] == '0')
+			break;
+		else if (userInput[0] > '0' && userInput[0] <= '5') {
+			foodItem = atoi(userInput);
+			pnode = treeSearch(root, searchResults[foodItem - 1]);
+		}
+		else if (userInput[0] < '0' || userInput[0] > '5') {
+			printMenuOptionError(); 
+			getchar(); 
+			addDiaryEntry(); 
+		}
 		time_t now;
 		time(&now);
-		printConfirmation("ADD", ctime(&now), pnode->long_name); 
-		readString(str, stdin); 
-		if (str[0] == 'n' || str[0] == 'N')
+		printConfirmation("ADD", ctime(&now), searchResults[foodItem - 1]); 
+		readString(userInput, stdin); 
+		if (userInput[0] == 'n' || userInput[0] == 'N')
 			break; 
 		diary->numEntries += 1;
 		diary[diary->numEntries - 1].time = strtok(ctime(&now), "\n");
 		diary[diary->numEntries - 1].entries = pnode;
 		printRepeatOption("add");
-		readString(str, stdin);
-		if (str[0] == 'n' || str[0] == 'N')
+		readString(userInput, stdin);
+		if (userInput[0] == 'n' || userInput[0] == 'N')
 			break; 
 	}
 }
@@ -203,8 +216,8 @@ void updateDiaryEntry() {
 			*choice = 0;
 		//free(key);
 	}
-	printMainMenu(); 
-	chooseMainMenuOption(); 
+	//printMainMenu(); 
+	//chooseMainMenuOption(); 
 }
 
 void writeDiary() {
