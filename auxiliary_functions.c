@@ -177,10 +177,10 @@ void chooseMainMenuOption() {
 				listAllEntries();
 				break;
 			case 2:
-				addDiaryEntry();
+				addDiaryEntry("ADD");
 				break;
 			case 3:
-				deleteDiaryEntry();
+				deleteDiaryEntry("DELETE");
 				break;
 			case 4:
 				updateDiaryEntry();

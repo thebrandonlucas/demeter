@@ -34,7 +34,7 @@ extern Productptr pnode;
 
 // Serves as double-inclusion guard
 // A function for finding the max element in a tree
-int max(int a, int b);
+int maximum(int a, int b);
 
 // A function for finding the height of the tree
 int treeHeight(Productptr root);
@@ -54,8 +54,11 @@ Productptr treeSearch(Productptr root, char *key);
 // Insert function
 Productptr treeInsert(Productptr pnode, Productptr tempnode);
 
+// Deallocate the tree
+void deallocateTree(Productptr root); 
+
 // Delete a node
-Productptr treeDelete(Productptr root, int key); 
+//Productptr treeDelete(Productptr root, int key); 
 
 // Update contents of node with key
 Productptr treeUpdate(Productptr root, Productptr newData, int key);

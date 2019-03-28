@@ -49,5 +49,5 @@ void printMenuOptions();
 void printUser(); 
 
 // Prints 30 stars for aesthetics
-void printStars(); 
+void printUnderscores();
 #endif

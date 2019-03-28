@@ -13,7 +13,7 @@
 Productptr root = NULL; 
 Productptr pnode = NULL; 
 
-int max(int a, int b) {
+int maximum(int a, int b) {
 	return (a > b) ? a : b; 
 }
 
@@ -63,22 +63,18 @@ Productptr newProductNode(Productptr tempnode) {
 }
 
 Productptr treeSearch(Productptr root, char *key) {
-	char rootName[BUFFER_SIZE] = ""; 
-	strncpy(rootName, root->long_name, strlen(root->long_name)); 
-	stripSpace(rootName); 
+	char rootName[BUFFER_SIZE] = "";
+	strncpy(rootName, root->long_name, strlen(root->long_name));
+	stripSpace(rootName); stripSpace(key);
+	uppercase(rootName); uppercase(key);
 	if (strncmp(key, rootName, strlen(key)) == 0)
 		return root;
 	if (strncmp(key, rootName, strlen(rootName)) < 0) {
-		if (root->left == NULL) return root; 
+		if (root->left == NULL) return root;
 		return treeSearch(root->left, key);
 	}
-	if (root->right == NULL) return root; 
+	if (root->right == NULL) return root;
 	return treeSearch(root->right, key);
-	//if ((root->left == NULL || root->right == NULL) || strcmp(key, root->long_name) == 0)
-	//	return root; 
-	//if (strcmp(key, root->long_name) < 0)
-	//	return treeSearch(root->left, key);
-	//return treeSearch(root->right, key);
 }
 
 // TODO: Change tempnode to "data" or some better name
@@ -103,7 +99,7 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	}
 
 	// update height of ancestor node 
-	pnode->treeHeight = 1 + max(treeHeight(pnode->left), treeHeight(pnode->right)); 
+	pnode->treeHeight = 1 + maximum(treeHeight(pnode->left), treeHeight(pnode->right));
 
 	// get balance factor to check whether this node is now unbalanced
 	int balanceFactor = getBalanceFactor(pnode); 
@@ -132,74 +128,82 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	return pnode;
 }
 
-// TODO: change pnode to node
-Productptr treeDelete(Productptr pnode, int key) {
-	if (pnode == NULL)
-		return pnode; 
-	if (key < pnode->NBD_Number)
-		pnode->left = treeDelete(pnode->left, key);
-	else if (key > pnode->NBD_Number)
-		pnode->right = treeDelete(pnode->right, key); 
-	else {
-		// if node has only one child or no child
-		if ((pnode->left == NULL) || (pnode->right == NULL)) {
-			Productptr temp = pnode->left ? pnode->left : pnode->right; 
-
-			// no children
-			if (temp == NULL) {
-				temp = pnode;
-				pnode = NULL; 
-			}
-			// one child
-			else 
-				*pnode = *temp; 
-			free(temp); 				
-		}
-		// node with two children
-		else {
-			Productptr temp = treeMinimum(pnode->right); 
-
-			pnode->NBD_Number = temp->NBD_Number;
-			pnode->long_name = temp->long_name;
-			pnode->manufacturer = temp->manufacturer;
-			pnode->energy = temp->energy;
-			pnode->carbs = temp->carbs;
-			pnode->fat = temp->fat;
-			pnode->protein = temp->protein;
-			pnode->serving_size = temp->serving_size;
-			pnode->serving_size_units = temp->serving_size_units;
-			pnode->household_serving_size = temp->household_serving_size;
-			pnode->household_serving_size_units = temp->household_serving_size_units;
-
-			pnode->right = treeDelete(pnode->right, temp->NBD_Number); 
-		}
-	}
-
-	if (pnode == NULL)
-		return pnode; 
-
-	pnode->treeHeight = max(treeHeight(pnode->left), treeHeight(pnode->right)) + 1; 
-	int balanceFactor = getBalanceFactor(pnode); 
-
-	// if tree becomes unbalanced, do one of the four cases
-	// left left case
-	if (balanceFactor > 1 && getBalanceFactor(pnode->left) >= 0)
-		return rightRotate(pnode); 
-	// right right case
-	if (balanceFactor < -1 && getBalanceFactor(pnode->right) <= 0)
-		return leftRotate(pnode); 
-	// left right case
-	if (balanceFactor > 1 && getBalanceFactor(pnode->left) < 0) {
-		pnode->left = leftRotate(pnode->left); 
-		return rightRotate(pnode); 
-	}
-	// right left case
-	if (balanceFactor < -1 && getBalanceFactor(pnode->right) > 0) {
-		pnode->right = rightRotate(pnode->right); 
-		return leftRotate(pnode); 
-	}
-	return pnode; 
+void deallocateTree(Productptr root) {
+	if (root == NULL)
+		return; 
+	deallocateTree(root->left); 
+	deallocateTree(root->right); 
+	free(root); 
 }
+
+// TODO: change pnode to node
+//Productptr treeDelete(Productptr pnode, int key) {
+//	if (pnode == NULL)
+//		return pnode; 
+//	if (key < pnode->NBD_Number)
+//		pnode->left = treeDelete(pnode->left, key);
+//	else if (key > pnode->NBD_Number)
+//		pnode->right = treeDelete(pnode->right, key); 
+//	else {
+//		 if node has only one child or no child
+//		if ((pnode->left == NULL) || (pnode->right == NULL)) {
+//			Productptr temp = pnode->left ? pnode->left : pnode->right; 
+//
+//			 no children
+//			if (temp == NULL) {
+//				temp = pnode;
+//				pnode = NULL; 
+//			}
+//			 one child
+//			else 
+//				*pnode = *temp; 
+//			free(temp); 				
+//		}
+//		 node with two children
+//		else {
+//			Productptr temp = treeMinimum(pnode->right); 
+//
+//			pnode->NBD_Number = temp->NBD_Number;
+//			pnode->long_name = temp->long_name;
+//			pnode->manufacturer = temp->manufacturer;
+//			pnode->energy = temp->energy;
+//			pnode->carbs = temp->carbs;
+//			pnode->fat = temp->fat;
+//			pnode->protein = temp->protein;
+//			pnode->serving_size = temp->serving_size;
+//			pnode->serving_size_units = temp->serving_size_units;
+//			pnode->household_serving_size = temp->household_serving_size;
+//			pnode->household_serving_size_units = temp->household_serving_size_units;
+//
+//			pnode->right = treeDelete(pnode->right, temp->NBD_Number); 
+//		}
+//	}
+//
+//	if (pnode == NULL)
+//		return pnode; 
+//
+//	pnode->treeHeight = max(treeHeight(pnode->left), treeHeight(pnode->right)) + 1; 
+//	int balanceFactor = getBalanceFactor(pnode); 
+//
+//	 if tree becomes unbalanced, do one of the four cases
+//	 left left case
+//	if (balanceFactor > 1 && getBalanceFactor(pnode->left) >= 0)
+//		return rightRotate(pnode); 
+//	 right right case
+//	if (balanceFactor < -1 && getBalanceFactor(pnode->right) <= 0)
+//		return leftRotate(pnode); 
+//	 left right case
+//	if (balanceFactor > 1 && getBalanceFactor(pnode->left) < 0) {
+//		pnode->left = leftRotate(pnode->left); 
+//		return rightRotate(pnode); 
+//	}
+//	 right left case
+//	if (balanceFactor < -1 && getBalanceFactor(pnode->right) > 0) {
+//		pnode->right = rightRotate(pnode->right); 
+//		return leftRotate(pnode); 
+//	}
+//	return pnode; 
+//}
 
 // TODO: should I change NBD_number to "key" for consistency?
 //Productptr treeUpdate(Productptr root, Productptr newData, int key) {
@@ -213,8 +217,8 @@ Productptr rightRotate(Productptr y) {
 	// rotate and update the height
 	x->right = y; 
 	y->left = beta; 
-	y->treeHeight = max(treeHeight(y->left), treeHeight(y->right)) + 1; 
-	x->treeHeight = max(treeHeight(x->left), treeHeight(x->right)) + 1; 
+	y->treeHeight = maximum(treeHeight(y->left), treeHeight(y->right)) + 1;
+	x->treeHeight = maximum(treeHeight(x->left), treeHeight(x->right)) + 1;
 
 	return x; 
 }
@@ -226,8 +230,8 @@ Productptr leftRotate(Productptr x) {
 	// rotate and update height
 	y->left = x; 
 	x->right = beta; 
-	x->treeHeight = max(treeHeight(x->left), treeHeight(x->right)) + 1;
-	y->treeHeight = max(treeHeight(y->left), treeHeight(y->right)) + 1;
+	x->treeHeight = maximum(treeHeight(x->left), treeHeight(x->right)) + 1;
+	y->treeHeight = maximum(treeHeight(y->left), treeHeight(y->right)) + 1;
 
 	return y; 
 }

@@ -14,8 +14,8 @@ extern int *choice;
 
 typedef struct diary {
 	int numEntries; 
-	char *time;
-	Productptr entries; 
+	char **time;
+	Productptr *entries; 
 } Diary;
 
 // load data from file into diary
@@ -33,13 +33,13 @@ void printDiarySearchResults(char *key);
 
 // Prompt and search for an element in the diary
 // Returns a node with corresponding element
-char *searchDiary(); 
+char *searchDiary(char *option); 
 
 // Add a new entry to a diary
-void addDiaryEntry(); 
+void addDiaryEntry(char *option);
 
 // Delete a diary entry
-void deleteDiaryEntry(); 
+void deleteDiaryEntry(char *option);
 
 // Update a diary entry
 void updateDiaryEntry(); 

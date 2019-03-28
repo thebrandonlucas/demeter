@@ -57,30 +57,22 @@ void printMenuOptionError() {
 void readMenuInput(int *choice) {
 	char *ptr;
 	char str[BUFFER_SIZE];
-	//*choice = 0; 
-	//printf("asdf"); 
-	//while (fgets(str, sizeof(char*), stdin)) {
 	readString(str, stdin); 
 	*choice = strtol(str, &ptr, 10);
 	if (*choice == 0) {
 		printMenuOptionError();
 		getchar(); 
 	}
-		//else
-		//	break; 
-	//}
 }
 
 void printRepeatOption(char *option) {
 	system("clear"); 
-	//uppercase(option); 
 	printMenuHeader(option); 
 	printf("Would you like to %s another item? (y/n): ", option); 
 }
 
 void printConfirmation(char *option, char* time, char *name) {
 	system("clear");
-	//uppercase(option); 
 	printMenuHeader(option); 
 	printf("\tEntry Date: %s\n\tItem: %s\n\n", time, name); 
 	printf("Are you sure you want to %s this item? (y/n): ", option); 
@@ -107,6 +99,6 @@ void printUser() {
 	printf("\t\n\n%s", username); 
 }
 
-void printStars() {
-	printf("******************************\n\n"); 
+void printUnderscores() {
+	printf("_____________________________\n\n"); 
 }
