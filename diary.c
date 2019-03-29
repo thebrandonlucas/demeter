@@ -114,8 +114,9 @@ int buildLCSTable(int n, int m, int L[n][m], char *X, char *Y) {
 char *searchDiary(char *option) {
 	char *userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
 	system("clear");
-	printMenuHeader("");
+	printMenuHeader(option);
 	printf("Search Diary: ");
+	// TODO: add readString here?
 	fgets(userInput, BUFFER_SIZE, stdin);
 	uppercase(userInput);
 	return userInput; 
@@ -126,9 +127,11 @@ void addDiaryEntry(char *option) {
 		char userSearch[BUFFER_SIZE] = "";
 		char userInput[BUFFER_SIZE] = ""; 
 		char searchResults[5][BUFFER_SIZE] = { "" };
+		char *token; 
 		int foodItem = 0; 
 		system("clear");
 		printMenuHeader(option);
+		// Clear input buffer
 		printf("Search foods: ");
 		readString(userSearch, stdin);
 		uppercase(userSearch);
@@ -138,35 +141,38 @@ void addDiaryEntry(char *option) {
 		// modify palloc to check memory?
 		pnode = treeSearch(root, userSearch);
 		//printf("-- %s --\n", pnode->long_name);
-
 		loadSearchResults(searchResults, pnode); 
 		printSearchResults(searchResults);
-		printf("\nPress '0' to go back to Main Menu.\n\n");
+		printf("\nPress 'm' to go back to Main Menu.\n\n");
 		printf("Select Item: ");
 		readString(userInput, stdin); 
-		if (userInput[0] == '0')
+		if (userInput[0] == 'm')
 			return;
 		else if (userInput[0] > '0' && userInput[0] <= '5') {
 			foodItem = atoi(userInput);
 			pnode = treeSearch(root, searchResults[foodItem - 1]);
 		}
 		else if (userInput[0] < '0' || userInput[0] > '5') {
-			printMenuOptionError(); 
+			printMenuOptionError();
 			getchar(); 
-			addDiaryEntry(option); 
+			continue; 
 		}
 		time_t now;
 		time(&now);
 		printConfirmation(option, ctime(&now), searchResults[foodItem - 1]);
 		readString(userInput, stdin); 
-		if (userInput[0] != 'y' || userInput[0] != 'Y')
-			return;
+		token = strtok(userInput, "\n"); 
+		strncpy(userInput, token, BUFFER_SIZE); 
+		if (userInput[0] != 'y' && userInput[0] != 'Y')
+			break;
 		diary->numEntries += 1;
 		diary->time[diary->numEntries - 1] = strtok(ctime(&now), "\n");
 		diary->entries[diary->numEntries - 1] = pnode;
 		printRepeatOption(option, pnode->long_name);
 		readString(userInput, stdin);
-		if (userInput[0] != 'n' || userInput[0] != 'N')
+		token = strtok(userInput, "\n");
+		strncpy(userInput, token, BUFFER_SIZE);
+		if (userInput[0] != 'y' && userInput[0] != 'Y')
 			break; 
 	}
 }
@@ -177,9 +183,9 @@ void deleteDiaryEntry(char *option) {
 		char str[BUFFER_SIZE] = ""; 
 		char *name; 
 		int highestMatchIndex, highestMatchCount = 0;
-		system("clear");
-		printMenuHeader("DELETE");
-		if (diary->numEntries >= 0) {
+		//system("clear");
+		//printMenuHeader("DELETE");
+		if (diary->numEntries <= 0) {
 			printf("You have no diary entries to delete!\nPress ENTER to continue: ");
 			getchar();
 			break;
@@ -210,31 +216,25 @@ void deleteDiaryEntry(char *option) {
 			}
 		}
 		printRepeatOption(option, name); 
+		readString(str, stdin); 
+		if (str[0] != 'y' && str[0] != 'Y')
+			break; 
 	}
 }
 
 void updateDiaryEntry() {
 	while (1) {
 		// Delete 
-		char userSearch[BUFFER_SIZE] = "";
-		char userInput[BUFFER_SIZE] = "";
-		char searchResults[5][BUFFER_SIZE] = { "" };
-		int foodItem = 0;
+		char *key;
+		char str[BUFFER_SIZE] = "";
 		char *name;
-		char *key; 
 		int highestMatchIndex, highestMatchCount = 0;
-		system("clear");
-		printMenuHeader("UPDATE");
-		if (diary->numEntries >= 0) {
-			printf("You have no diary entries to delete!\nPress ENTER to continue: ");
+		if (diary->numEntries <= 0) {
+			printf("You have no diary entries to update!\nPress ENTER to continue: ");
 			getchar();
 			break;
 		}
 		key = searchDiary("UPDATE");
-		//Productptr pnode = palloc();
-		//pnode = treeSearch(root, key);
-		//system("clear");
-		//printMenuHeader("UPDATE");
 		for (int i = 0; i < diary->numEntries; i++) {
 			int n = strlen(key);
 			int m = strlen(diary->entries[i]->long_name);
@@ -250,8 +250,8 @@ void updateDiaryEntry() {
 		printMenuHeader("UPDATE");
 		printf("\tEntry Date: %s\n\tItem: %s\n\n", diary->time[highestMatchIndex], diary->entries[highestMatchIndex]->long_name);
 		printf("UPDATE this item? (y/n): ");
-		readString(userInput, stdin);
-		if (userInput[0] == 'y' || userInput[0] == 'Y') {
+		readString(str, stdin);
+		if (str[0] == 'y' || str[0] == 'Y') {
 			name = diary->entries[highestMatchIndex]->long_name;
 			// delete matching entry
 			for (int i = highestMatchIndex; i < diary->numEntries - 1; i++) {
@@ -263,19 +263,81 @@ void updateDiaryEntry() {
 				free(diary->entries[diary->numEntries]);
 			}
 		}
+		else
+			continue; 
+		//printRepeatOption(option, name);
+		//readString(str, stdin);
+		//if (str[0] != 'y' && str[0] != 'Y')
+		//	break;
+		//char userSearch[BUFFER_SIZE] = "";
+		//char userInput[BUFFER_SIZE] = "";
+		//char searchResults[5][BUFFER_SIZE] = { "" };
+		//int foodItem = 0;
+		//char *name;
+		//char *key; 
+		//int highestMatchIndex, highestMatchCount = 0;
+		////system("clear");
+		////printMenuHeader("UPDATE");
+		//if (diary->numEntries <= 0) {
+		//	printf("You have no diary entries to delete!\nPress ENTER to continue: ");
+		//	getchar();
+		//	break;
+		//}
+		//key = searchDiary("UPDATE");
+		////Productptr pnode = palloc();
+		////pnode = treeSearch(root, key);
+		////system("clear");
+		////printMenuHeader("UPDATE");
+		//for (int i = 0; i < diary->numEntries; i++) {
+		//	int n = strlen(key);
+		//	int m = strlen(diary->entries[i]->long_name);
+		//	int L[n + 1][m + 1];
+		//	int tempMatchCount = buildLCSTable(n, m, L, key, diary->entries[i]->long_name);
+		//	if (tempMatchCount > highestMatchCount) {
+		//		highestMatchCount = tempMatchCount;
+		//		highestMatchIndex = i;
+		//	}
+		//}
+		////printConfirmation("UPDATE to", diary->time[highestMatchIndex], diary->entries[highestMatchIndex]->long_name);
+		//system("clear");
+		//printMenuHeader("UPDATE");
+		//printf("\tEntry Date: %s\n\tItem: %s\n\n", diary->time[highestMatchIndex], diary->entries[highestMatchIndex]->long_name);
+		//printf("UPDATE this item? (y/n): ");
+		//readString(userInput, stdin);
+		//if (userInput[0] == 'y' || userInput[0] == 'Y') {
+		//	name = diary->entries[highestMatchIndex]->long_name;
+		//	// delete matching entry
+		//	for (int i = highestMatchIndex; i < diary->numEntries - 1; i++) {
+		//		diary->time[i] = diary->time[i + 1];
+		//		diary->entries[i] = diary->entries[i + 1];
+		//	}
+		//	if (diary->numEntries > 0) {
+		//		diary->numEntries--;
+		//		free(diary->entries[diary->numEntries]);
+		//	}
+		//}
+		//else {
+		//	continue; 
+		//}
 		
 		// ADD
-		// TODO: refactor into functions
+		char userSearch[BUFFER_SIZE] = "";
+		char userInput[BUFFER_SIZE] = "";
+		char searchResults[5][BUFFER_SIZE] = { "" };
+		char *token;
+		int foodItem = 0;
 		system("clear");
 		printMenuHeader("UPDATE");
+		// Clear input buffer
 		printf("Search replacement food: ");
-		//addDiaryEntry("UPDATE"); 
-		//deleteDiaryEntry("UPDATE"); 
 		readString(userSearch, stdin);
 		uppercase(userSearch);
 		stripSpace(userSearch);
 		Productptr pnode = palloc();
+		// checkMemory();
+		// modify palloc to check memory?
 		pnode = treeSearch(root, userSearch);
+		//printf("-- %s --\n", pnode->long_name);
 		loadSearchResults(searchResults, pnode);
 		printSearchResults(searchResults);
 		printf("\nPress 'm' to go back to Main Menu.\n\n");
@@ -294,23 +356,76 @@ void updateDiaryEntry() {
 		}
 		time_t now;
 		time(&now);
+		//printConfirmation(option, ctime(&now), searchResults[foodItem - 1]);
 		system("clear");
 		printMenuHeader("UPDATE");
 		printf("\tEntry Date: %s\n\tItem: %s\n\n", ctime(&now), searchResults[foodItem - 1]);
 		printf("UPDATE to this item? (y/n): ");
 		readString(userInput, stdin);
-		if (userInput[0] != 'y' || userInput[0] != 'Y')
-			return;
+		token = strtok(userInput, "\n");
+		strncpy(userInput, token, BUFFER_SIZE);
+		if (userInput[0] != 'y' && userInput[0] != 'Y')
+			break;
 		diary->numEntries += 1;
 		diary->time[diary->numEntries - 1] = strtok(ctime(&now), "\n");
 		diary->entries[diary->numEntries - 1] = pnode;
+		printRepeatOption("UPDATE", pnode->long_name);
+		readString(userInput, stdin);
+		token = strtok(userInput, "\n");
+		strncpy(userInput, token, BUFFER_SIZE);
+		if (userInput[0] != 'y' && userInput[0] != 'Y')
+			break;
 		strncat(name, "\nto: \n", BUFFER_SIZE); 
 		strncat(name, pnode->long_name, BUFFER_SIZE); 
 		printRepeatOption("UPDATE", name);
 		//printf(" to: \n%s", pnode->long_name); 
 		readString(userInput, stdin);
-		if (userInput[0] != 'y' || userInput[0] != 'Y')
+		if (userInput[0] != 'y' && userInput[0] != 'Y')
 			break;
+		// TODO: refactor into functions
+		//system("clear");
+		//printMenuHeader("UPDATE");
+		//printf("Search replacement food: ");
+		//readString(userSearch, stdin);
+		//uppercase(userSearch);
+		//stripSpace(userSearch);
+		//Productptr pnode = palloc();
+		//pnode = treeSearch(root, userSearch);
+		//loadSearchResults(searchResults, pnode);
+		//printSearchResults(searchResults);
+		//printf("\nPress 'm' to go back to Main Menu.\n\n");
+		//printf("Select Replacement Item: ");
+		//readString(userInput, stdin);
+		//if (userInput[0] == 'm')
+		//	return;
+		//else if (userInput[0] > '0' && userInput[0] <= '5') {
+		//	foodItem = atoi(userInput);
+		//	pnode = treeSearch(root, searchResults[foodItem - 1]);
+		//}
+		//else if (userInput[0] < '0' || userInput[0] > '5') {
+		//	printMenuOptionError();
+		//	getchar();
+		//	continue;
+		//}
+		//time_t now;
+		//time(&now);
+		//system("clear");
+		//printMenuHeader("UPDATE");
+		//printf("\tEntry Date: %s\n\tItem: %s\n\n", ctime(&now), searchResults[foodItem - 1]);
+		//printf("UPDATE to this item? (y/n): ");
+		//readString(userInput, stdin);
+		//if (userInput[0] != 'y' && userInput[0] != 'Y')
+		//	return;
+		//diary->numEntries += 1;
+		//diary->time[diary->numEntries - 1] = strtok(ctime(&now), "\n");
+		//diary->entries[diary->numEntries - 1] = pnode;
+		//strncat(name, "\nto: \n", BUFFER_SIZE); 
+		//strncat(name, pnode->long_name, BUFFER_SIZE); 
+		//printRepeatOption("UPDATE", name);
+		////printf(" to: \n%s", pnode->long_name); 
+		//readString(userInput, stdin);
+		//if (userInput[0] != 'y' && userInput[0] != 'Y')
+		//	break;
 	}
 }
 
