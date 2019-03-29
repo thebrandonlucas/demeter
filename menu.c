@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "menu.h"
 #include "product.h"
 #include "diary.h"
@@ -10,9 +11,11 @@ void printLoginMenu();
 void printPasswordMenu(); 
 void printMenuHeader(char *header); 
 
-void printMainMenu() {
+void printMainMenu(/*char *statusMessage*/) {
 	system("clear");
 	printMenuHeader("MAIN MENU");
+	//if (status != "")
+	//	printf("Successfully performed %s", statusMessage); 
 	printf("1 - List Your Summary\n");
 	printf("2 - Add Meal\n");
 	printf("3 - Delete Meal\n");
@@ -65,17 +68,21 @@ void readMenuInput(int *choice) {
 	}
 }
 
-void printRepeatOption(char *option) {
+void printRepeatOption(char *option, char *name) {
 	system("clear"); 
 	printMenuHeader(option); 
-	printf("Would you like to %s another item? (y/n): ", option); 
+	if (strncmp(option, "ADD", strlen(name)) == 0)
+		printf("%sED %s\n\n", option, name);
+	else
+		printf("%sD %s\n\n", option, name); 
+	printf("Would you like to %s another item? (y/n): ", option);
 }
 
 void printConfirmation(char *option, char* time, char *name) {
 	system("clear");
 	printMenuHeader(option); 
 	printf("\tEntry Date: %s\n\tItem: %s\n\n", time, name); 
-	printf("Are you sure you want to %s this item? (y/n): ", option); 
+	printf("%s this item? (y/n): ", option); 
 }
 
 void printSearchResults(char searchResults[5][BUFFER_SIZE]) {

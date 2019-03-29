@@ -13,9 +13,9 @@ extern char *userInput;
 extern int *choice; 
 
 typedef struct diary {
-	int numEntries; 
+	int numEntries;
 	char **time;
-	Productptr *entries; 
+	Productptr *entries;
 } Diary;
 
 // load data from file into diary
@@ -27,9 +27,6 @@ void listAllEntries();
 // Build a longest common subsequence table for 
 // better search results
 int buildLCSTable(int n, int m, int L[n][m], char *X, char *Y); 
-
-// Print diary search results for delete and update
-void printDiarySearchResults(char *key);
 
 // Prompt and search for an element in the diary
 // Returns a node with corresponding element

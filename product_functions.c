@@ -24,7 +24,13 @@ int treeHeight(Productptr root) {
 }
 
 Productptr palloc(void) {
-	return (Productptr)malloc(sizeof(ProductNode)); 
+	Productptr pnode = (Productptr)malloc(sizeof(ProductNode)); 
+	if (pnode == NULL) {
+		printf("Error: out of memory\n");
+		printf("Exiting...\n"); 
+		exit(0);
+	}
+	return pnode; 
 }
 
 void pfree(Productptr root) {
@@ -63,13 +69,14 @@ Productptr newProductNode(Productptr tempnode) {
 }
 
 Productptr treeSearch(Productptr root, char *key) {
-	char rootName[BUFFER_SIZE] = "";
+	char rootName[BUFFER_SIZE] = ""; char keyName[BUFFER_SIZE] = ""; 
 	strncpy(rootName, root->long_name, strlen(root->long_name));
-	stripSpace(rootName); stripSpace(key);
-	uppercase(rootName); uppercase(key);
-	if (strncmp(key, rootName, strlen(key)) == 0)
+	strncpy(keyName, key, strlen(root->long_name));
+	stripSpace(rootName); stripSpace(keyName);
+	uppercase(rootName); uppercase(keyName);
+	if (strncmp(keyName, rootName, strlen(keyName)) == 0)
 		return root;
-	if (strncmp(key, rootName, strlen(rootName)) < 0) {
+	if (strncmp(keyName, rootName, strlen(rootName)) < 0) {
 		if (root->left == NULL) return root;
 		return treeSearch(root->left, key);
 	}

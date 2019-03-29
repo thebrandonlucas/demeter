@@ -34,7 +34,7 @@ void printMenuOptionError();
 void readMenuInput(int *choice); 
 
 // Gives user option to repeat action
-void printRepeatOption(char *option); 
+void printRepeatOption(char *option, char *name); 
 
 // Confirm a delete or an update
 void printConfirmation(char *option, char* time, char *name);

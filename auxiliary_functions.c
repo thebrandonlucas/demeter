@@ -93,16 +93,17 @@ void createNewUserDiary() {
 	// number of entries for new file is 0
 	fputs("0\n", diaryFile);
 	loadDiary(diaryFile); 
+	fclose(diaryFile);
 	printMenuHeader("CREATE NEW USER"); 
 	printf("Success! Created new diary for %s\n\n", username); 
 	printf("Press any key to continue: "); 
 	getchar(); /*getchar(); */
-	fclose(diaryFile); 
 	// TODO: free username and filename at end of program
 }
 
 void login() {
 	int fileAlreadyExists = 0;
+	char *token; 
 	while (fileAlreadyExists == 0) {
 		//char str[BUFFER_SIZE]; 
 		system("clear");
@@ -110,17 +111,14 @@ void login() {
 		printf("Sign-in\n\n");
 		printf("Press '0' to go back.\n\n"); 
 		printf("Enter username: ");
-		//scanf("%s", username);
 		readString(username, stdin); 
+		token = strtok(username, "\n"); 
 		if (username[0] == '0') {
 			chooseLoginMenuOption(); 
 		}
-		sscanf(username, "%s", username); 
-		strcpy(filename, username);
-		strcat(filename, ".log");
-		// TODO: ADD PASSWORD CHECK AND MAKE SURE USERNAME AND PASSWORD ARE SAME
-		strcpy(filename, username);
-		strcat(filename, ".log");
+		strncpy(username, token, BUFFER_SIZE); 
+		strncpy(filename, username, BUFFER_SIZE); 
+		strncat(filename, ".log", BUFFER_SIZE + 4);
 		fileAlreadyExists = fileExists(filename);
 		if (fileAlreadyExists == 0) {
 			system("clear");
@@ -158,7 +156,7 @@ void chooseLoginMenuOption() {
 		default:
 			system("clear");
 			printMenuHeader("ERROR");
-			printf("Make sure you're entering an integer!\n");
+			printf("Make sure you're entering one of the options!\n");
 			printf("Press ENTER to continue: ");
 			getchar();
 		}
@@ -238,26 +236,11 @@ int readInt(FILE *input) {
 void readString(char str[], FILE *input) {
 	while (fgets(str, BUFFER_SIZE, input) == NULL) {
 		printMenuHeader("ERROR"); 
-		printf("Error. Please enter no more than 1024 characters."); 
+		printf("Error. Please enter no more than 1024 characters. ");
+		getchar(); 
+		system("clear"); 
 	}
-//	if (str[0] == 'm' || str[0] == 'M') {
-//		printMainMenu(); 
-//		chooseMainMenuOption(); 
-//	} else if (str[0] == 'e' || str[0])
 }
-
-//char *removeSpaces(char *str) {
-//	char *dest = str;
-//	while (*str != 0) {
-//		if (*str != ' ') {
-//			*dest = *str;
-//			dest += 1; 
-//		}
-//		str += 1;
-//	}
-//	*dest = 0;
-//	return dest; 
-//}
 
 //https://stackoverflow.com/questions/7775138/strip-whitespace-from-a-string-in-place
 void stripSpace(char *str) {
