@@ -5,7 +5,7 @@
 //#define SERVING_SIZE 237911
 //#define NUTRIENTS_SIZE 1048576
 
-typedef struct pnode *Productptr;
+typedef struct pnode ProductNode;
 
 // A node to store attributes for each product
 typedef struct pnode {
@@ -24,60 +24,62 @@ typedef struct pnode {
 
 	// AVL tree attributes
 	int treeHeight; 
-	Productptr left; 
-	Productptr right; 
-	Productptr parent; 
+	ProductNode *left;
+	ProductNode *right;
+	ProductNode *parent;
 } ProductNode;
 
-extern Productptr root; 
-extern Productptr pnode;
+extern ProductNode *root; 
+extern ProductNode *pnode;
 
 // Serves as double-inclusion guard
 // A function for finding the max element in a tree
 int maximum(int a, int b);
 
 // A function for finding the height of the tree
-int treeHeight(Productptr root);
+int treeHeight(ProductNode *root);
 
 // A function to allocate a new product
-Productptr palloc(void);
+ProductNode *palloc(void);
 
 // Free all nodes at end of program
-void pfree(Productptr root); 
+void pfree(ProductNode *root);
 
 // A function to create a new product node
-Productptr newProductNode(Productptr tempnode);
+ProductNode *newProductNode(ProductNode *tempnode);
 
 // Find node with the matching NBD_Number (key)
-Productptr treeSearch(Productptr root, char *key); 
+ProductNode *treeSearch(ProductNode *root, char *key);
 
 // Insert function
-Productptr treeInsert(Productptr pnode, Productptr tempnode);
+ProductNode *treeInsert(ProductNode *pnode, ProductNode *tempnode);
 
 // Deallocate the tree
-void deallocateTree(Productptr root); 
+void deallocateTree(ProductNode *root);
+
+void deallocateChar(char *time);
 
 // Delete a node
 //Productptr treeDelete(Productptr root, int key); 
 
 // Update contents of node with key
-Productptr treeUpdate(Productptr root, Productptr newData, int key);
+ProductNode *treeUpdate(ProductNode *root, ProductNode *newData, int key);
 
 // Auxiliary rotate functions
-Productptr rightRotate(Productptr y); 
-Productptr leftRotate(Productptr x);
+ProductNode *rightRotate(ProductNode *y);
+ProductNode *leftRotate(ProductNode *x);
 
 // To get the Minimum and Maximum nodes
-Productptr treeMinimum(Productptr pnode); 
-Productptr treeMaximum(Productptr pnode); 
+ProductNode *treeMinimum(ProductNode *pnode);
+ProductNode *treeMaximum(ProductNode *pnode);
 
 // Get successor and predecessor nodes
-Productptr treeSuccessor(Productptr pnode); 
-Productptr treePredecessor(Productptr pnode);
+ProductNode *treeSuccessor(ProductNode *pnode);
+ProductNode *treePredecessor(ProductNode *pnode);
 
 // Balance factor of node N
-int getBalanceFactor(Productptr N); 
+int getBalanceFactor(ProductNode *N);
 
 // TODO: DELETE
-void preOrder(Productptr root); 
+void preOrder(ProductNode *root);
 #endif

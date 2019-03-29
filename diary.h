@@ -3,20 +3,20 @@
 
 #define BUFFER_SIZE 1024
 
-typedef struct diary *Diaryptr; 
+typedef struct diary DiaryNode; 
 
-extern char *username;
-extern char *filename; 
+extern char username[50];
+extern char filename[50]; 
 extern FILE *diaryFile; 
-extern Diaryptr diary; 
-extern char *userInput; 
-extern int *choice; 
+extern DiaryNode *diary;
+extern char userInput[BUFFER_SIZE]; 
+//extern char choice; 
 
 typedef struct diary {
 	int numEntries;
 	char **time;
-	Productptr *entries;
-} Diary;
+	ProductNode **entries;
+} DiaryNode;
 
 // load data from file into diary
 void loadDiary(FILE *diaryFile);

@@ -57,15 +57,11 @@ void printMenuOptionError() {
 	printf("\nPress ENTER to continue: "); 
 }
 
-void readMenuInput(int *choice) {
+void readMenuInput(char choice) {
 	char *ptr;
 	char str[BUFFER_SIZE];
 	readString(str, stdin); 
-	*choice = strtol(str, &ptr, 10);
-	if (*choice == 0) {
-		printMenuOptionError();
-		getchar(); 
-	}
+	choice = strtol(str, &ptr, 10); 
 }
 
 void printRepeatOption(char *option, char *name) {

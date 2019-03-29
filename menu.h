@@ -31,7 +31,7 @@ void printMenuOptionError();
 
 // Helper function for reading and validating 
 // user input
-void readMenuInput(int *choice); 
+void readMenuInput(char choice); 
 
 // Gives user option to repeat action
 void printRepeatOption(char *option, char *name); 

@@ -14,6 +14,6 @@ int main() {
 	fflush(stdout); 
 	root = loadProductData(productFile, root); 
 	chooseLoginMenuOption(); 
-	cleanup(); 
+	writeDiary(); 
 	return 0; 
 }

@@ -10,21 +10,21 @@
 	used in the maintenance of the product AVL tree. 
 */
 
-Productptr root = NULL; 
-Productptr pnode = NULL; 
+ProductNode *root = NULL;
+ProductNode *pnode = NULL;
 
 int maximum(int a, int b) {
 	return (a > b) ? a : b; 
 }
 
-int treeHeight(Productptr root) {
+int treeHeight(ProductNode *root) {
 	if (root == NULL)
 		return 0; 
 	return root->treeHeight; 
 }
 
-Productptr palloc(void) {
-	Productptr pnode = (Productptr)malloc(sizeof(ProductNode)); 
+ProductNode *palloc(void) {
+	ProductNode *pnode = malloc(sizeof(ProductNode));
 	if (pnode == NULL) {
 		printf("Error: out of memory\n");
 		printf("Exiting...\n"); 
@@ -33,8 +33,8 @@ Productptr palloc(void) {
 	return pnode; 
 }
 
-void pfree(Productptr root) {
-	Productptr temp = palloc();
+void pfree(ProductNode *root) {
+	ProductNode *temp = palloc();
 	if (root != NULL) {
 		temp = root->left; 
 		free(root->left); 
@@ -46,8 +46,8 @@ void pfree(Productptr root) {
 	free(temp); 
 }
 
-Productptr newProductNode(Productptr tempnode) {
-	Productptr pnode = palloc(); 
+ProductNode *newProductNode(ProductNode *tempnode) {
+	ProductNode *pnode = palloc();
 
 	pnode->NBD_Number = tempnode->NBD_Number;
 	pnode->long_name = tempnode->long_name;
@@ -68,7 +68,7 @@ Productptr newProductNode(Productptr tempnode) {
 	return(pnode); 
 }
 
-Productptr treeSearch(Productptr root, char *key) {
+ProductNode *treeSearch(ProductNode *root, char *key) {
 	char rootName[BUFFER_SIZE] = ""; char keyName[BUFFER_SIZE] = ""; 
 	strncpy(rootName, root->long_name, strlen(root->long_name));
 	strncpy(keyName, key, strlen(root->long_name));
@@ -85,12 +85,12 @@ Productptr treeSearch(Productptr root, char *key) {
 }
 
 // TODO: Change tempnode to "data" or some better name
-Productptr treeInsert(Productptr pnode, Productptr tempnode) {
+ProductNode *treeInsert(ProductNode *pnode, ProductNode *tempnode) {
 	char *key = tempnode->long_name; 
 	if (pnode == NULL)
 		return newProductNode(tempnode); 
 
-	Productptr temp; 
+	ProductNode *temp;
 	if (strncmp(key, pnode->long_name, strlen(key)) < 0) {
 		temp = treeInsert(pnode->left, tempnode);
 		pnode->left = temp; 
@@ -135,12 +135,18 @@ Productptr treeInsert(Productptr pnode, Productptr tempnode) {
 	return pnode;
 }
 
-void deallocateTree(Productptr root) {
+void deallocateTree(ProductNode *root) {
 	if (root == NULL)
 		return; 
 	deallocateTree(root->left); 
 	deallocateTree(root->right); 
 	free(root); 
+}
+
+void deallocateChar(char *time) {
+	if (time == NULL)
+		return; 
+	free(time); 
 }
 
 // TODO: change pnode to node
@@ -217,9 +223,9 @@ void deallocateTree(Productptr root) {
 //
 //}
 
-Productptr rightRotate(Productptr y) {
-	Productptr x = y->left; 
-	Productptr beta = x->right; 
+ProductNode *rightRotate(ProductNode *y) {
+	ProductNode *x = y->left;
+	ProductNode *beta = x->right;
 	
 	// rotate and update the height
 	x->right = y; 
@@ -230,9 +236,9 @@ Productptr rightRotate(Productptr y) {
 	return x; 
 }
 
-Productptr leftRotate(Productptr x) {
-	Productptr y = x->right; 
-	Productptr beta = y->left; 
+ProductNode *leftRotate(ProductNode *x) {
+	ProductNode *y = x->right;
+	ProductNode *beta = y->left;
 
 	// rotate and update height
 	y->left = x; 
@@ -243,22 +249,22 @@ Productptr leftRotate(Productptr x) {
 	return y; 
 }
 
-Productptr treeMinimum(Productptr pnode) {
+ProductNode *treeMinimum(ProductNode *pnode) {
 	while (pnode->left != NULL)
 		pnode = pnode->left; 
 	return pnode; 
 }
 
-Productptr treeMaximum(Productptr pnode) {
+ProductNode *treeMaximum(ProductNode *pnode) {
 	while (pnode->right != NULL)
 		pnode = pnode->right;
 	return pnode;
 }
 
-Productptr treeSuccessor(Productptr pnode) {
+ProductNode *treeSuccessor(ProductNode *pnode) {
 	if (pnode->right != NULL)
 		return treeMinimum(pnode->right);
-	Productptr y = pnode->parent; 
+	ProductNode *y = pnode->parent;
 	while (y != NULL && pnode == y->right) {
 		pnode = y; 
 		y = y->parent; 
@@ -266,10 +272,10 @@ Productptr treeSuccessor(Productptr pnode) {
 	return y; 
 }
 
-Productptr treePredecessor(Productptr pnode) {
+ProductNode *treePredecessor(ProductNode *pnode) {
 	if (pnode->left != NULL)
 		return treeMinimum(pnode->left);
-	Productptr y = pnode->parent; 
+	ProductNode *y = pnode->parent;
 	while (y != NULL && pnode == y->left) {
 		pnode = y; 
 		y = y->parent; 
@@ -277,7 +283,7 @@ Productptr treePredecessor(Productptr pnode) {
 	return y; 
 }
 
-int getBalanceFactor(Productptr N) {
+int getBalanceFactor(ProductNode *N) {
 	if (N == NULL)
 		return 0;
 	return treeHeight(N->left) - treeHeight(N->right);
@@ -287,7 +293,7 @@ int getBalanceFactor(Productptr N) {
 // of the tree. 
 // The function also prints height of every node 
 // TODO: delete this function when done with project
-void preOrder(Productptr root)
+void preOrder(ProductNode *root)
 {
 	if (root != NULL)
 	{

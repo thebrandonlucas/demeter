@@ -12,11 +12,11 @@ void init();
 
 // Loads data from the food_database.csv file into the tree
 // starting at root
-Productptr loadProductData(char* filename, Productptr root); 
+ProductNode *loadProductData(char* filename, ProductNode *root);
 
 // Returns top 5 search results in array for user to 
 // choose from
-void loadSearchResults(char searchResults[5][BUFFER_SIZE], Productptr pnode);
+void loadSearchResults(char searchResults[5][BUFFER_SIZE], ProductNode *pnode);
 
 // Print menu to create new user diary
 void createNewUserDiary();
