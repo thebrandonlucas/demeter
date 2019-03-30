@@ -148,8 +148,12 @@ void addDiaryEntry(char *option) {
 		}
 		time_t now;
 		time(&now);
-		printConfirmation(option, ctime(&now), searchResults[foodItem - 1]);
-		readString(userInput, stdin); 
+		while (1) {
+			printConfirmation(option, ctime(&now), searchResults[foodItem - 1]);
+			readString(userInput, stdin);
+			if (userInput[0] != '\n')
+				break;
+		}
 		token = strtok(userInput, "\n"); 
 		strncpy(userInput, token, BUFFER_SIZE); 
 		if (userInput[0] != 'y' && userInput[0] != 'Y')
@@ -158,8 +162,12 @@ void addDiaryEntry(char *option) {
 		//strncpy(diary->time[diary->numEntries - 1], token, BUFFER_SIZE); 
 		diary->time[diary->numEntries - 1] = strtok(ctime(&now), "\n");
 		diary->entries[diary->numEntries - 1] = pnode;
-		printRepeatOption(option, pnode->long_name);
-		readString(userInput, stdin);
+		while (1) {
+			printRepeatOption(option, pnode->long_name);
+			readString(userInput, stdin);
+			if (userInput[0] != '\n')
+				break;
+		}
 		token = strtok(userInput, "\n");
 		strncpy(userInput, token, BUFFER_SIZE);
 		if (userInput[0] != 'y' && userInput[0] != 'Y')
@@ -172,6 +180,7 @@ void deleteDiaryEntry(char *option) {
 		char *key;
 		char str[BUFFER_SIZE] = ""; 
 		char *name; 
+		char *token; 
 		int highestMatchIndex, highestMatchCount = 0;
 		if (diary->numEntries <= 0) {
 			printf("You have no diary entries to delete!\nPress ENTER to continue: ");
@@ -189,8 +198,14 @@ void deleteDiaryEntry(char *option) {
 				highestMatchIndex = i;
 			}
 		}
-		printConfirmation("DELETE", diary->time[highestMatchIndex], diary->entries[highestMatchIndex]->long_name);
-		readString(str, stdin); 
+		while (1) {
+			printConfirmation("DELETE", diary->time[highestMatchIndex], diary->entries[highestMatchIndex]->long_name);
+			readString(str, stdin);
+			if (str[0] != '\n')
+				break;
+		}
+		token = strtok(str, "\n"); 
+		strncpy(str, token, BUFFER_SIZE); 
 		if (str[0] == 'y' || str[0] == 'Y') {
 			name = diary->entries[highestMatchIndex]->long_name; 
 			// delete matching entry
@@ -204,8 +219,16 @@ void deleteDiaryEntry(char *option) {
 				//free(diary->entries[diary->numEntries]); 
 			}
 		}
-		printRepeatOption(option, name); 
-		readString(str, stdin); 
+		else
+			break; 
+		while (1) {
+			printRepeatOption(option, name);
+			readString(str, stdin);
+			if (str[0] != '\n')
+				break; 
+		}
+		token = strtok(str, "\n"); 
+		strncpy(str, token, BUFFER_SIZE); 
 		if (str[0] != 'y' && str[0] != 'Y')
 			break; 
 	}
@@ -216,7 +239,7 @@ void updateDiaryEntry() {
 		// Delete 
 		char *key;
 		char str[BUFFER_SIZE] = "";
-		char *name;
+		char name[BUFFER_SIZE] = "";
 		int highestMatchIndex, highestMatchCount = 0;
 		if (diary->numEntries <= 0) {
 			printf("You have no diary entries to update!\nPress ENTER to continue: ");
@@ -240,7 +263,8 @@ void updateDiaryEntry() {
 		printf("UPDATE this item? (y/n): ");
 		readString(str, stdin);
 		if (str[0] == 'y' || str[0] == 'Y') {
-			name = diary->entries[highestMatchIndex]->long_name;
+			strncpy(name, diary->entries[highestMatchIndex]->long_name, BUFFER_SIZE); 
+			//name = diary->entries[highestMatchIndex]->long_name;
 			// delete matching entry
 			for (int i = highestMatchIndex; i < diary->numEntries - 1; i++) {
 				diary->time[i] = diary->time[i + 1];
@@ -252,7 +276,7 @@ void updateDiaryEntry() {
 			}
 		}
 		else
-			continue; 
+			break; 
 		// ADD
 		char userSearch[BUFFER_SIZE] = "";
 		char userInput[BUFFER_SIZE] = "";
@@ -288,11 +312,15 @@ void updateDiaryEntry() {
 		}
 		time_t now;
 		time(&now);
-		system("clear");
-		printMenuHeader("UPDATE");
-		printf("\tEntry Date: %s\n\tItem: %s\n\n", ctime(&now), searchResults[foodItem - 1]);
-		printf("UPDATE to this item? (y/n): ");
-		readString(userInput, stdin);
+		while (1) {
+			system("clear");
+			printMenuHeader("UPDATE");
+			printf("\tEntry Date: %s\n\tItem: %s\n\n", ctime(&now), searchResults[foodItem - 1]);
+			printf("UPDATE to this item? (y/n): ");
+			readString(userInput, stdin);
+			if (userInput[0] != '\n')
+				break; 
+		}
 		token = strtok(userInput, "\n");
 		strncpy(userInput, token, BUFFER_SIZE);
 		if (userInput[0] != 'y' && userInput[0] != 'Y')
@@ -300,12 +328,12 @@ void updateDiaryEntry() {
 		diary->numEntries += 1;
 		diary->time[diary->numEntries - 1] = strtok(ctime(&now), "\n");
 		diary->entries[diary->numEntries - 1] = pnode;
-		printRepeatOption("UPDATE", pnode->long_name);
-		readString(userInput, stdin);
-		token = strtok(userInput, "\n");
-		strncpy(userInput, token, BUFFER_SIZE);
-		if (userInput[0] != 'y' && userInput[0] != 'Y')
-			break;
+		//printRepeatOption("UPDATE", pnode->long_name);
+		//readString(userInput, stdin);
+		//token = strtok(userInput, "\n");
+		//strncpy(userInput, token, BUFFER_SIZE);
+		//if (userInput[0] != 'y' && userInput[0] != 'Y')
+		//	break;
 		strncat(name, "\nto: \n", BUFFER_SIZE); 
 		strncat(name, pnode->long_name, BUFFER_SIZE); 
 		printRepeatOption("UPDATE", name);
@@ -328,10 +356,6 @@ void writeDiary() {
 		strncat(str, diary->entries[i]->long_name, BUFFER_SIZE);
 		fprintf(diaryFile, "%s\n", str);
 	}
-	// figure out how to free that memory
-	//pfree(root); 
-	//free(diary->entries); 
 	fclose(diaryFile); 
-
 }
 

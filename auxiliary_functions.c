@@ -13,12 +13,7 @@ void printMenuHeader(char *header);
 void chooseMainMenuOption(); 
 
 void init() {
-	//username[50]; 
-	//filename[50]; 
-	//*username = '\0'; 
-	//filename = (char*)malloc(sizeof(char)*BUFFER_SIZE);
-	//userInput = (char*)malloc(sizeof(char)*BUFFER_SIZE);
-	//choice = malloc(sizeof(int)); 
+
 }
 
 ProductNode *loadProductData(char* filename, ProductNode *root) {
@@ -102,16 +97,20 @@ void login() {
 	char *token; 
 	while (fileAlreadyExists == 0) {
 		//char str[BUFFER_SIZE]; 
-		system("clear");
-		printMenuHeader("LOGIN");
-		printf("Sign-in\n\n");
-		printf("Press '0' to go back.\n\n"); 
-		printf("Enter username: ");
-		readString(username, stdin); 
-		token = strtok(username, "\n"); 
-		if (username[0] == '0') {
-			chooseLoginMenuOption(); 
+		while (1) {
+			system("clear");
+			printMenuHeader("LOGIN");
+			printf("Sign-in\n\n");
+			printf("Press '0' to go back.\n\n");
+			printf("Enter username: ");
+			readString(username, stdin);
+			if (username[0] != '\n')
+				break; 
 		}
+
+		token = strtok(username, "\n"); 
+		if (username[0] == '0') 
+			chooseLoginMenuOption(); 
 		strncpy(username, token, 50); 
 		strncpy(filename, username, 50); 
 		strncat(filename, ".log", 54);
@@ -154,12 +153,8 @@ void chooseLoginMenuOption() {
 			default:
 				system("clear");
 				printMenuHeader("ERROR");
-				//if (choice == '0') 
-					printMenuOptionError();
-				//else {
-					printf("Make sure you're entering one of the options!\n");
-					printf("Press ENTER to continue: ");
-				//}
+				printf("Make sure you're entering a SPECIFIED INTEGER!\n");
+				printf("Press any key to continue: ");
 				getchar();
 		}
 	}
@@ -187,7 +182,7 @@ void chooseMainMenuOption() {
 				break;
 			case '5':
 				system("clear"); 
-				if (*username != '\0')
+				if (username != '\0')
 					printf("Happy Healthy Eating, %s!\n", username);
 				else
 					printf("Happy Healthy Eating!\n"); 
@@ -196,7 +191,7 @@ void chooseMainMenuOption() {
 			default:
 				system("clear"); 
 				printMenuHeader("ERROR"); 
-				printf("Make sure you're entering an INTEGER!\n");
+				printf("Make sure you're entering a SPECIFIED INTEGER!\n");
 				printf("Press any key to continue: "); 
 				getchar(); 
 		}
