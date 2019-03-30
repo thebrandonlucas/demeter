@@ -8,7 +8,6 @@
 
 void printMainMenu(); 
 void printLoginMenu(); 
-void printPasswordMenu(); 
 void printMenuHeader(char *header); 
 
 void printMainMenu(/*char *statusMessage*/) {
@@ -32,18 +31,6 @@ void printLoginMenu() {
 	printf("\nPlease choose an option: ");
 }
 
-//void printLoginValidationMenu() {
-//	system("clear"); 
-//	printMenuHeader(); 
-//	printf("Enter username: "); 
-//}
-
-void printLoadingMenu() {
-	system("clear"); 
-	printf("Loading. Pleeeeease wait."); 
-	system("clear"); 
-}
-
 void printMenuHeader(char *header) {
 	printf("* * * Demeter Nutrition Tracker * * *\n");
 	printf("\t\t%s\n\n", header); 
@@ -55,13 +42,6 @@ void printMenuOptionError() {
 	printf("Error. Please enter an integer corresponding\n");
 	printf("to the correct choice.\n");
 	printf("\nPress ENTER to continue: "); 
-}
-
-void readMenuInput(char choice) {
-	char *ptr;
-	char str[BUFFER_SIZE];
-	readString(str, stdin); 
-	choice = strtol(str, &ptr, 10); 
 }
 
 void printRepeatOption(char *option, char *name) {
@@ -82,24 +62,11 @@ void printConfirmation(char *option, char* time, char *name) {
 }
 
 void printSearchResults(char searchResults[5][BUFFER_SIZE]) {
-	printf("_____________________________\n"); 
+	printUnderscores(); 
 	printf("\n");
 	for (int i = 0; i < 5; i++)
 		printf("%d - %s\n\n", i + 1, searchResults[i]);
-	printf("_____________________________\n\n");
-}
-
-//void printMenuOptionHelper() {
-//	printf("For instruction help, press 'h'\n"); 
-//}
-
-void printMenuOptions() {
-	printf("\n\n\n\n\nGo to main menu - 'm'\t"); 
-	printf("Save and exit   - 'e'\n");
-}
-
-void printUser() {
-	printf("\t\n\n%s", username); 
+	printUnderscores(); 
 }
 
 void printUnderscores() {

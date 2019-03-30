@@ -1,10 +1,14 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
-//#define PRODUCTS_SIZE 228805
-//#define DERIVATION_CODE_DESCRIPTION_SIZE 9
-//#define SERVING_SIZE 237911
-//#define NUTRIENTS_SIZE 1048576
 
+/*
+	This file contains all of the functions
+	dealing with operations on the AVL tree 
+	of food products. 
+*/
+
+// A descriptive shorthand for the struct pnode, 
+// or "product node", type
 typedef struct pnode ProductNode;
 
 // A node to store attributes for each product
@@ -29,10 +33,11 @@ typedef struct pnode {
 	ProductNode *parent;
 } ProductNode;
 
+// A global variable to hold the root of the 
+// AVL tree
 extern ProductNode *root; 
 extern ProductNode *pnode;
 
-// Serves as double-inclusion guard
 // A function for finding the max element in a tree
 int maximum(int a, int b);
 
@@ -42,28 +47,17 @@ int treeHeight(ProductNode *root);
 // A function to allocate a new product
 ProductNode *palloc(void);
 
-// Free all nodes at end of program
-void pfree(ProductNode *root);
-
 // A function to create a new product node
 ProductNode *newProductNode(ProductNode *tempnode);
 
-// Find node with the matching NBD_Number (key)
+// Find node with the matching string (key)
 ProductNode *treeSearch(ProductNode *root, char *key);
 
-// Insert function
+// Insert a node into the tree
 ProductNode *treeInsert(ProductNode *pnode, ProductNode *tempnode);
 
 // Deallocate the tree
 void deallocateTree(ProductNode *root);
-
-void deallocateChar(char *time);
-
-// Delete a node
-//Productptr treeDelete(Productptr root, int key); 
-
-// Update contents of node with key
-ProductNode *treeUpdate(ProductNode *root, ProductNode *newData, int key);
 
 // Auxiliary rotate functions
 ProductNode *rightRotate(ProductNode *y);
@@ -79,7 +73,4 @@ ProductNode *treePredecessor(ProductNode *pnode);
 
 // Balance factor of node N
 int getBalanceFactor(ProductNode *N);
-
-// TODO: DELETE
-void preOrder(ProductNode *root);
 #endif

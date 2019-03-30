@@ -14,40 +14,21 @@ void printMainMenu();
 // Displays login menu
 void printLoginMenu();
 
-// Asks for username and password to login
-//void printLoginValidationMenu();
-
-// Show food search options
-//void printFoodSearchMenu(); 
-
-// Inform the user of loading on startup
-void printLoadingMenu(); 
-
 // Print the Demeter header
 void printMenuHeader(char *header);
 
 // Error message for bad user input 
 void printMenuOptionError();
 
-// Helper function for reading and validating 
-// user input
-void readMenuInput(char choice); 
-
-// Gives user option to repeat action
+// Gives user option to repeat add, delete, or update
 void printRepeatOption(char *option, char *name); 
 
-// Confirm a delete or an update
+// Confirm a delete or an add
 void printConfirmation(char *option, char* time, char *name);
 
-// Print the results of the closest search results
+// Print the closest search results to user input
 void printSearchResults(char searchResults[5][BUFFER_SIZE]); 
 
-// Menu options to navigate the program
-void printMenuOptions(); 
-
-// Print the current username
-void printUser(); 
-
-// Prints 30 stars for aesthetics
+// Prints 30 underscores for aesthetics
 void printUnderscores();
 #endif

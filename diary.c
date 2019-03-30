@@ -130,21 +130,38 @@ void addDiaryEntry(char *option) {
 		stripSpace(userSearch);
 		ProductNode *pnode = palloc();
 		pnode = treeSearch(root, userSearch);
-		loadSearchResults(searchResults, pnode); 
-		printSearchResults(searchResults);
-		printf("\nPress 'm' to go back to Main Menu.\n\n");
-		printf("Select Item: ");
-		readString(userInput, stdin); 
-		if (userInput[0] == 'm')
-			return;
-		else if (userInput[0] > '0' && userInput[0] <= '5') {
-			foodItem = atoi(userInput);
-			pnode = treeSearch(root, searchResults[foodItem - 1]);
-		}
-		else if (userInput[0] < '0' || userInput[0] > '5') {
-			printMenuOptionError();
-			getchar(); 
-			continue; 
+		loadSearchResultsSuccessor(searchResults, pnode); 
+		while (1) {
+			system("clear"); 
+			printMenuHeader(option); 
+			printSearchResults(searchResults);
+			printf("Alphabetical search.\n");
+			printf("'f' to search forward.\n'b' to search backward."); 
+			printf("\nPress 'm' to go back to Main Menu.\n\n");
+			printf("Select Item: ");
+			readString(userInput, stdin);
+			if (userInput[0] == 'm')
+				return;
+			//else if (userInput[0] == 'f') {
+			//	pnode = treeSearch(root, searchResults[4]);
+			//	loadSearchResultsSuccessor(searchResults, pnode);
+			//	continue; 
+			//}
+			//else if (userInput[0] == 'b') {
+			//	pnode = treeSearch(root, searchResults[4]);
+			//	loadSearchResultsPredecessor(searchResults, pnode);
+			//	continue; 
+			//}
+			else if (userInput[0] > '0' && userInput[0] <= '5') {
+				foodItem = atoi(userInput);
+				pnode = treeSearch(root, searchResults[foodItem - 1]);
+				break; 
+			}
+			else if (userInput[0] < '0' || userInput[0] > '5') {
+				printMenuOptionError();
+				getchar();
+				continue;
+			}
 		}
 		time_t now;
 		time(&now);
@@ -294,7 +311,7 @@ void updateDiaryEntry() {
 		// checkMemory();
 		// modify palloc to check memory?
 		pnode = treeSearch(root, userSearch);
-		loadSearchResults(searchResults, pnode);
+		loadSearchResultsSuccessor(searchResults, pnode);
 		printSearchResults(searchResults);
 		printf("\nPress 'm' to go back to Main Menu.\n\n");
 		printf("Select Replacement Item: ");

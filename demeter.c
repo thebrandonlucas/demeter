@@ -7,11 +7,7 @@
 #include "diary.h"
 
 int main() {
-	system("clear"); 
-	init(); 
 	char *productFile = "food_database.csv";
-	printLoadingMenu();
-	fflush(stdout); 
 	root = loadProductData(productFile, root); 
 	chooseLoginMenuOption(); 
 	writeDiary(); 

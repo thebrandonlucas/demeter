@@ -42,15 +42,24 @@ ProductNode *loadProductData(char* filename, ProductNode *root) {
 	return root;
 }
 
-void loadSearchResults(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
+void loadSearchResultsPredecessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
 	int i = 0; 
+	searchResults[i][0] = '\0'; 
 	strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
-	for (i = 1; i < 3; i++) {
-		pnode = treeSuccessor(pnode);
+	for (i = 1; i < 5; i++) {
+		searchResults[i][0] = '\0';
+		pnode = treePredecessor(pnode);
 		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
 	}
-	for (int i = 3; i < 5; i++) {
-		pnode = treePredecessor(pnode);
+}
+
+void loadSearchResultsSuccessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
+	int i = 0;
+	searchResults[i][0] = '\0';
+	strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+	for (i = 1; i < 5; i++) {
+		searchResults[i][0] = '\0';
+		pnode = treeSuccessor(pnode);
 		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
 	}
 }
