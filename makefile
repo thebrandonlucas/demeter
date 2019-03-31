@@ -4,9 +4,6 @@ make: demeter.c product.c auxiliary.c menu.c diary.c
 	gcc -o demeter -Wall -pedantic -std=c11 demeter.c product.c auxiliary.c menu.c diary.c
 
 build: 
-	rm BFPD_csv_07132018.zip || true
-	rm BFPD_Doc.pdf || true
-
 	wget https://www.ars.usda.gov/ARSUserFiles/80400525/Data/BFPDB/BFPD_csv_07132018.zip
 
 	unzip "BFPD_csv_07132018.zip"
@@ -32,3 +29,6 @@ build:
 
 clean: 
 	rm *.log *.csv || true
+	rm BFPD_csv_07132018.zip || true
+	rm BFPD_Doc.pdf || true
+	

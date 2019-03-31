@@ -59,7 +59,7 @@ ProductNode *newProductNode(ProductNode *tempnode) {
 ProductNode *treeSearch(ProductNode *root, char *key) {
 	char rootName[BUFFER_SIZE] = ""; char keyName[BUFFER_SIZE] = ""; 
 	strncpy(rootName, root->long_name, strlen(root->long_name));
-	strncpy(keyName, key, strlen(root->long_name));
+	strncpy(keyName, key, strlen(key));
 	trimSpace(rootName); trimSpace(keyName); 
 	uppercase(rootName); uppercase(keyName);
 	if (strncmp(keyName, rootName, strlen(keyName)) == 0)

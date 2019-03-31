@@ -228,7 +228,7 @@ void deleteDiaryEntry(char *option) {
 			}
 			if (diary->numEntries > 0) {
 				diary->numEntries--;
-				free(diary->entries[diary->numEntries]); 
+				//free(diary->entries[diary->numEntries]); 
 			}
 		}
 		else
@@ -300,7 +300,7 @@ void updateDiaryEntry() {
 			}
 			if (diary->numEntries > 0) {
 				diary->numEntries--;
-				free(diary->entries[diary->numEntries]);
+				//free(diary->entries[diary->numEntries]);
 			}
 		}
 		else
