@@ -381,16 +381,23 @@ void updateDiaryEntry() {
 }
 
 void writeDiary() {
-	char str[BUFFER_SIZE] = "";
+	char str[MAX_DIARY_ENTRIES][BUFFER_SIZE] = { "" };
 	diaryFile = fopen(filename, "w"); 
-	sprintf(str, "%d", diary->numEntries); 
-	fprintf(diaryFile, "%s\n", str); 
-	str[BUFFER_SIZE] = '\0';
+	//sprintf(str, "%d", diary->numEntries); 
+	//fprintf(diaryFile, "%s\n", str); 
+	//str[BUFFER_SIZE] = '\0';
+	//for (int i = 0; i < diary->numEntries; i++) {
+	//	printf("%s\n", diary->entries[i]->long_name); 
+	//}
 	for (int i = 0; i < diary->numEntries; i++) {
-		strncpy(str, diary->time[i], BUFFER_SIZE);
-		strncat(str, "~", BUFFER_SIZE);
-		strncat(str, diary->entries[i]->long_name, BUFFER_SIZE);
-		fprintf(diaryFile, "%s\n", str);
+		strncpy(str[i], diary->time[i], BUFFER_SIZE);
+		strncat(str[i], "~", BUFFER_SIZE);
+		strncat(str[i], diary->entries[i]->long_name, BUFFER_SIZE);
+		strncat(str[i], "\n", BUFFER_SIZE); 
+	}
+	fprintf(diaryFile, "%d\n", diary->numEntries); 
+	for (int i = 0; i < diary->numEntries; i++) {
+		fprintf(diaryFile, "%s", str[i]); 
 	}
 	fclose(diaryFile); 
 }

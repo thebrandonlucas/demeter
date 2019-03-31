@@ -22,8 +22,8 @@ build:
 	join -t \~ product nutrients >pn
 	join -t \~ pn serving >food_database.csv
 
-	rm ec fp pn energy carbs nutrients fat protein product serving
-	rm Nutrients.csv Products.csv Derivation_code_description.csv Serving_size.csv
+	rm ec fp pn energy carbs nutrients fat protein product serving || true
+	rm Nutrients.csv Products.csv Derivation_code_description.csv Serving_size.csv || true
 
 	./demeter
 

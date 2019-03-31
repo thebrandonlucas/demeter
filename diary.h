@@ -10,6 +10,7 @@
 // A standard generic buffer size used 
 // throughout the program
 #define BUFFER_SIZE 1024
+#define MAX_DIARY_ENTRIES 750
 
 // A descriptive shorthand for the diary struct type
 typedef struct diary DiaryNode; 
