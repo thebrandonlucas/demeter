@@ -24,7 +24,7 @@ void printMenuOptionError();
 void printRepeatOption(char *option, char *name); 
 
 // Confirm a delete or an add
-void printConfirmation(char *option, char* time, char *name);
+void printConfirmation(char *option, char* time, ProductNode *pnode);
 
 // Print the closest search results to user input
 void printSearchResults(char searchResults[5][BUFFER_SIZE]); 

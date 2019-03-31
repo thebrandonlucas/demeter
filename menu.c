@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "menu.h"
 #include "product.h"
 #include "diary.h"
 #include "auxiliary.h"
+#include "menu.h"
 
 void printMainMenu(); 
 void printLoginMenu(); 
@@ -54,10 +54,25 @@ void printRepeatOption(char *option, char *name) {
 	printf("Would you like to %s another item? (y/n): ", option);
 }
 
-void printConfirmation(char *option, char* time, char *name) {
+void printConfirmation(char *option, char* time, ProductNode *pnode) {
 	system("clear");
 	printMenuHeader(option); 
-	printf("\tEntry Date: %s\n\tItem: %s\n\n", time, name); 
+	//printf("\tEntry Date: %s\n\tItem: %s\n\n", time, name); 
+	printUnderscores();
+	printf("%s\n\n", pnode->long_name);
+	printf("Entry Date: %s\n", time);
+	printf("Manufacturer: %s\n", pnode->manufacturer);
+	printf("Serving Size: %.2f%s\n", pnode->serving_size, pnode->serving_size_units);
+	printf("\n~~~ Nutrition Info (per serving) ~~~\n\n");
+	printf("Calories: %.2f\n", pnode->energy);
+	printf("Daily Value: %.2f%%\n\n", (pnode->serving_size / 100) * pnode->energy);
+	printf("Carbs: %.2f\n", pnode->carbs);
+	printf("Daily Value: %.2f%%\n\n", (pnode->serving_size / 100) * pnode->carbs);
+	printf("Protein: %.2f\n", pnode->protein);
+	printf("Daily Value: %.2f%%\n\n", (pnode->serving_size / 100) * pnode->protein);
+	printf("Fat: %.2f\n", pnode->fat);
+	printf("Daily Value: %.2f%%\n\n", (pnode->serving_size / 100) * pnode->fat);
+	printUnderscores();
 	printf("%s this item? (y/n): ", option); 
 }
 

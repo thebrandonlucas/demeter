@@ -38,16 +38,16 @@ ProductNode *loadProductData(char* filename, ProductNode *root) {
 	return root;
 }
 
-void loadSearchResultsPredecessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
-	int i = 0; 
-	searchResults[i][0] = '\0'; 
-	strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
-	for (i = 1; i < 5; i++) {
-		searchResults[i][0] = '\0';
-		pnode = treePredecessor(pnode);
-		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
-	}
-}
+//void loadSearchResultsPredecessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
+//	int i = 0; 
+//	searchResults[i][0] = '\0'; 
+//	strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+//	for (i = 1; i < 5; i++) {
+//		searchResults[i][0] = '\0';
+//		pnode = treePredecessor(pnode);
+//		strncpy(searchResults[i], pnode->long_name, strlen(pnode->long_name));
+//	}
+//}
 
 void loadSearchResultsSuccessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode) {
 	int i = 0;
@@ -238,7 +238,25 @@ void readString(char str[], FILE *input) {
 	}
 }
 
-//https://stackoverflow.com/questions/7775138/strip-whitespace-from-a-string-in-place
-void stripSpace(char *str) {
-	for (size_t i = 0, j = 0; (str[j] = str[i]); j += !isspace(str[i++]));
+////https://stackoverflow.com/questions/7775138/strip-whitespace-from-a-string-in-place
+//void stripSpace(char *str) {
+//	for (size_t i = 0, j = 0; (str[j] = str[i]); j += !isspace(str[i++]));
+//}
+
+//https://stackoverflow.com/questions/122616/how-do-i-trim-leading-trailing-whitespace-in-a-standard-way
+void trimSpace(char *str) {
+	char *end;
+
+	// Trim leading space
+	while (isspace((unsigned char)*str)) str++;
+
+	if (*str == 0)  // All spaces?
+		return;
+
+	// Trim trailing space
+	end = str + strlen(str) - 1;
+	while (end > str && isspace((unsigned char)*end)) end--;
+
+	// Write new null terminator character
+	end[1] = '\0';
 }

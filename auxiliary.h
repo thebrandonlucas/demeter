@@ -14,7 +14,7 @@ ProductNode *loadProductData(char* filename, ProductNode *root);
 
 // Returns top 5 search Predecessor results for user to 
 // choose from 
-void loadSearchResultsPredecessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode);
+//void loadSearchResultsPredecessor(char searchResults[5][BUFFER_SIZE], ProductNode *pnode);
 
 // Returns top 5 search Successor results for user to 
 // choose from 
@@ -48,5 +48,6 @@ int readInt(FILE *input);
 void readString(char str[], FILE *input);
 
 // Remove spaces from a string
-void stripSpace(char *str);
+//void stripSpace(char *str);
+void trimSpace(char *str); 
 #endif

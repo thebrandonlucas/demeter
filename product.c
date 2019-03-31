@@ -1,5 +1,4 @@
 #include <stdlib.h>
-// TODO: delete stdio after deleting preorder
 #include <stdio.h>
 #include <string.h>
 #include "product.h"
@@ -7,7 +6,9 @@
 
 /*
 	This file provides the definitions for functions
-	used in the maintenance of the product AVL tree. 
+	used in the maintenance of the product AVL tree.
+	Code was largely borrowed from: 
+	https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 */
 
 ProductNode *root = NULL;
@@ -59,7 +60,7 @@ ProductNode *treeSearch(ProductNode *root, char *key) {
 	char rootName[BUFFER_SIZE] = ""; char keyName[BUFFER_SIZE] = ""; 
 	strncpy(rootName, root->long_name, strlen(root->long_name));
 	strncpy(keyName, key, strlen(root->long_name));
-	stripSpace(rootName); stripSpace(keyName);
+	trimSpace(rootName); trimSpace(keyName); 
 	uppercase(rootName); uppercase(keyName);
 	if (strncmp(keyName, rootName, strlen(keyName)) == 0)
 		return root;
