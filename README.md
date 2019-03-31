@@ -31,7 +31,7 @@ make
 And the project should run. 
 
 ## Tutorial
-The Demeter tutorial video can be viewed here: 
+The Demeter tutorial video can be viewed here: https://www.youtube.com/watch?v=4QPjLcLdENs&list=UULdlyhzQAQaZgfIkKui8fJQ
 
 ## File System
 Users create new files, and sign in later with their usernames. The username matches the filename, which has a .log extension. 
