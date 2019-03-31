@@ -19,7 +19,7 @@ make build
 ```
 If that worked, great! Skip ahead to the next section. If not, continue reading below. 
 If for some reason the above fails, you can download the database file here: https://ndb.nal.usda.gov/ndb/
-Click on "Downloads", then BFPD ASCII Files. Move the data files to your directory and type: 
+Click on "Downloads", then BFPD ASCII Files. Move the data files to the demeter directory and type: 
 ```
 bash build.sh
 ```
