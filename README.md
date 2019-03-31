@@ -7,6 +7,7 @@ Please ensure you have the following tools installed on your system before attem
 - Ubuntu (on Windows machines this can be installed from the Microsoft store). 
 - ANSI C11 - The program is written in C, so it'd be helpful to have it installed!
 - wget (should already be installed on Ubuntu). 
+- unzip
 
 ## Installing
 You can clone this repo by typing: 
