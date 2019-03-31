@@ -15,6 +15,12 @@ void chooseMainMenuOption();
 ProductNode *loadProductData(char* filename, ProductNode *root) {
 	FILE* filestream;
 	char buffer[BUFFER_SIZE];
+	int doesFileExist = fileExists(filename); 
+	if (doesFileExist != 1) {
+		printf("Error. Please ensure food_database.csv is in the current directory.\n"); 
+		printf("Exiting...\n"); 
+		exit(0); 
+	}
 	filestream = fopen(filename, "r");
 	char *token;
 	int n = 500; 
