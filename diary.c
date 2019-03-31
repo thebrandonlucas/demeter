@@ -386,8 +386,6 @@ void writeDiary() {
 	sprintf(str, "%d", diary->numEntries); 
 	fprintf(diaryFile, "%s\n", str); 
 	str[BUFFER_SIZE] = '\0';
-	for (int i = 0; i < diary->numEntries; i++)
-		printf("%s\n", diary->time[i]); 
 	for (int i = 0; i < diary->numEntries; i++) {
 		strncpy(str, diary->time[i], BUFFER_SIZE);
 		strncat(str, "~", BUFFER_SIZE);

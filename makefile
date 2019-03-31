@@ -1,6 +1,6 @@
 CFLAGS=-W
 
-make: demeter.c product_functions.c auxiliary_functions.c menu.c diary.c
+make: demeter.c product.c auxiliary.c menu.c diary.c
 	gcc -o demeter -Wall -pedantic -std=c11 demeter.c product.c auxiliary.c menu.c diary.c
 
 build: 
