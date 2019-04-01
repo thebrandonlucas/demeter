@@ -25,6 +25,8 @@ build:
 	rm ec fp pn energy carbs nutrients fat protein product serving || true
 	rm Nutrients.csv Products.csv Derivation_code_description.csv Serving_size.csv || true
 
+	make
+
 	./demeter
 
 clean: 
